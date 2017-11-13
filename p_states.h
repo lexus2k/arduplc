@@ -1,0 +1,26 @@
+#pragma once
+
+#include "plc_sme.h"
+
+#include <stdint.h>
+
+enum
+{
+    STATE_POWER_ON,
+    STATE_INIT,
+    STATE_INIT_CYCLE,
+    STATE_PRESS_MIDDLE,
+    STATE_PLATFORM_LEFT,
+    STATE_PLATFORM_LEFT_WAIT,
+    STATE_PLATFORM_RIGHT,
+    STATE_PLATFORM_REMOVE,
+    STATE_PRESS_DOWN,
+    STATE_PRESS_DOWN_WAIT,
+    STATE_PRESS_UP,
+    STATE_FAULT,
+    STATE_REMOVE_BRIQUETTE,
+    STATE_PLC_DIAG,
+    STATE_MAX,
+};
+
+extern SState programStates[];
