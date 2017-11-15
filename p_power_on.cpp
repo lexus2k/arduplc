@@ -1,4 +1,6 @@
-#include "plc_poweron.h"
+#include "p_power_on.h"
+
+#include "p_states.h"
 
 #include "plc_inputs.h"
 #include "plc_outputs.h"
@@ -56,7 +58,30 @@ void powerOnRun()
         mainMenu.down();
         mainMenu.show();
     }
+    if (g_buttons.isLongHold(PLC_BUTTON_SELECT, millis(), 3000))
+    {
+        switch (mainMenu.selection())
+        {
+            case 0:
+                plcChangeState(STATE_INIT);
+            default:
+                break;
+        }
+    }
+    if (g_buttons.isShortPress(PLC_BUTTON_SELECT))
+    {
+        switch (mainMenu.selection())
+        {
+            case 5:
+                plcChangeState(STATE_PLC_DIAG);
+            default:
+                break;
+        }
+    }
 }
 
-
-
+void powerOnExit()
+{
+    initPlcInputs();
+    initPlcOutputs();
+}

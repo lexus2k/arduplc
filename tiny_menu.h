@@ -10,6 +10,7 @@ public:
     void show();
     void up();
     void down();
+    uint8_t selection();
 
 private:
     /// list of menu items of the menu

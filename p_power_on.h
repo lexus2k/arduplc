@@ -3,4 +3,5 @@
 
 void powerOnEnter();
 void powerOnRun();
+void powerOnExit();
 

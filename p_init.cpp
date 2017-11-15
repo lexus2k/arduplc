@@ -1,3 +1,5 @@
+#include "p_init.h"
+
 #include "p_states.h"
 #include "p_sensors.h"
 #include "p_solenoids.h"
@@ -13,7 +15,9 @@ void initEnter()
     g_lcd.clear();
     g_lcd.setCursor(0,1);
     g_lcd.print("HACTPOUKA ...");
-    plcResetTimer();
+    plcSetFaultState(STATE_FAULT);
+    tone(8, 200, 1000);
+    plcResetTime();
     if (readPlcInput(SENSOR_REMOVED) == LOW)
     {
         writePlcOutput( SOLENOID_REMOVE, HIGH );
@@ -32,22 +36,18 @@ void initRun()
         writePlcOutput( SOLENOID_UP, LOW );
         passed++;
     }
-    else if (plcTimeout(10000))
-    {
-        plcChangeState( STATE_FAULT );
-    }
     if (readPlcInput(SENSOR_REMOVED) == HIGH)
     {
         writePlcOutput( SOLENOID_REMOVE, LOW );
         passed++;
     }
-    else if (plcTimeout(2000))
+/*    else if (plcStateTime() >= 2000)
     {
         plcChangeState( STATE_FAULT );
-    }
+    }*/
     if ( passed == 2 )
     {
-        plcChangeState( STATE_INIT_CYCLE );
+        plcChangeState( STATE_REMOVE_BRIQUETTE );
     }
 }
 

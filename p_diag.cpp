@@ -1,3 +1,5 @@
+#include "p_diag.h"
+
 #include "plc_inputs.h"
 #include "plc_outputs.h"
 #include "plc_lcd.h"
@@ -25,17 +27,25 @@ static uint8_t s_output = 0;
 
 static void plc_change_output()
 {
-    if (plcTimeout(2000))
+    if (plcStateTime() > 2000)
     {
         writePlcOutput(s_output, LOW);
-        plcResetTimer();
+        plcResetTime();
         s_output++;
         if (s_output >= plcOutputsCount()) s_output = 0;
         writePlcOutput(s_output, HIGH);
     }
 }
 
-void plc_manual_diag()
+void diagEnter()
+{
+    g_lcd.clear();
+    plcResetTime();
+    s_output = 0;
+    writePlcOutput(s_output, HIGH);
+}
+
+void diagRun()
 {
     plc_print_status();
     plc_change_output();
@@ -46,11 +56,7 @@ void plc_manual_diag()
     }
 }
 
-void plc_manual_diag_enter()
+void diagExit()
 {
-    g_lcd.clear();
-    plcResetTimer();
-    s_output = 0;
-    writePlcOutput(s_output, HIGH);
 }
 

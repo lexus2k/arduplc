@@ -85,3 +85,8 @@ void TinyMenu::show()
     }
     m_oldSelection = m_selection;
 }
+
+uint8_t TinyMenu::selection()
+{
+    return m_selection;
+}

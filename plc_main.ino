@@ -11,6 +11,7 @@
 
 void setup()
 {
+    pinMode(8, OUTPUT); // sound
     initPlcInputs();
     initPlcOutputs();
     g_buttons.init();
