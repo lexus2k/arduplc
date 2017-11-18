@@ -2,10 +2,16 @@
 
 #include <stdint.h>
 
+typedef struct MenuItem
+{
+    uint8_t id;
+    const char *text;
+};
+
 class TinyMenu
 {
 public:
-    TinyMenu(const char **items, uint8_t count);
+    TinyMenu(MenuItem *items, uint8_t count);
 
     void show();
     void up();
@@ -14,7 +20,7 @@ public:
 
 private:
     /// list of menu items of the menu
-    const char **m_items;
+    MenuItem *m_items;
     /// count of menu items in the menu
     uint8_t     m_count;
     /// currently selected item. Internally updated.

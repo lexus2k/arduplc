@@ -16,7 +16,7 @@ void setup()
     initPlcOutputs();
     g_buttons.init();
     g_lcd.init();
-    plcInitSme( programStates, STATE_MAX );
+    plcInitSme( programStates, programStatesCount() );
     plcChangeState( STATE_POWER_ON );
 }
 
@@ -24,6 +24,17 @@ void loop()
 {
     g_buttons.update();
     plcRunSme();
+    if (plcGetState() > STATE_PASSIVE)
+    {
+        if (g_buttons.isShortPress())
+        {
+            plcChangeState( STATE_POWER_ON );
+            tone(8, 200); delay(300);
+            tone(8, 500); delay(200);
+            tone(8, 1000); delay(100);
+            noTone(8);
+        }
+    }
 }
 
 

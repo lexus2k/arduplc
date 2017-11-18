@@ -10,19 +10,19 @@
 
 #include "tiny_menu.h"
 
-static const char *menuItems[] =
+enum
 {
-    "CTAPT",
-    "3ADEP#KA",
-    "CTATUCTUKA",
-    "HACTPOUKA",
-    "XOPOWO",
-    "DUA\x00A2HOCTUKA",
-    "TECTUPOBAHUE",
-    "menu item 8",
+    MENU_START,
+    MENU_DIAG,
 };
 
-static TinyMenu mainMenu(menuItems, sizeof(menuItems) / sizeof(char *));
+static MenuItem menuItems[] =
+{
+    { MENU_START, "CTAPT" },
+    { MENU_DIAG, "DUA\x00A2HOCTUKA"},
+};
+
+static TinyMenu mainMenu(menuItems, sizeof(menuItems) / sizeof(menuItems[0]));
 
 void powerOnEnter()
 {
@@ -62,7 +62,7 @@ void powerOnRun()
     {
         switch (mainMenu.selection())
         {
-            case 0:
+            case MENU_START:
                 plcChangeState(STATE_INIT);
             default:
                 break;
@@ -72,7 +72,7 @@ void powerOnRun()
     {
         switch (mainMenu.selection())
         {
-            case 5:
+            case MENU_DIAG:
                 plcChangeState(STATE_PLC_DIAG);
             default:
                 break;

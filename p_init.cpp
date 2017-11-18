@@ -13,10 +13,16 @@
 void initEnter()
 {
     g_lcd.clear();
-    g_lcd.setCursor(0,1);
+    g_lcd.setCursor(0,0);
     g_lcd.print("HACTPOUKA ...");
     plcSetFaultState(STATE_FAULT);
-    tone(8, 200, 1000);
+    tone(8, 200, 500);
+    delay(1000);
+    tone(8, 200, 500);
+    delay(1000);
+    tone(8, 200);
+    delay(500);
+    noTone(8);
     plcResetTime();
     if (readPlcInput(SENSOR_REMOVED) == LOW)
     {

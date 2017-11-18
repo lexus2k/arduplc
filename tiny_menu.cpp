@@ -10,7 +10,7 @@
 #endif
 
 
-TinyMenu::TinyMenu(const char **items, uint8_t count)
+TinyMenu::TinyMenu(MenuItem *items, uint8_t count)
     :m_items(items)
     ,m_count(count)
     ,m_selection(0)
@@ -72,7 +72,7 @@ void TinyMenu::drawMenuItem(uint8_t index)
     {
         g_lcd.setCursor(1, index - m_scrollPosition);
     }
-    g_lcd.print(m_items[index]);
+    g_lcd.print(m_items[index].text);
 }
 
 void TinyMenu::show()
@@ -88,5 +88,5 @@ void TinyMenu::show()
 
 uint8_t TinyMenu::selection()
 {
-    return m_selection;
+    return m_items[m_selection].id;
 }

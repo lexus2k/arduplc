@@ -7,6 +7,7 @@
 
 static uint32_t s_timestamp = 0;
 static uint8_t  s_faultStateId = 0;
+static uint8_t  s_faultId = 0;
 static SState *s_states;
 static SState *s_active = nullptr;
 static uint8_t s_count;
@@ -22,11 +23,14 @@ bool plcInitSme(SState *states, uint8_t count)
 
 void plcRunSme()
 {
-/*    if ((s_active->timeout) && (millis() - s_timestamp > s_active->timeout))
+#ifndef PLC_DEBUG
+    if ((s_active->timeout) && (millis() - s_timestamp > s_active->timeout))
     {
+        s_faultId = s_active->id;
         plcChangeState( s_faultStateId );
     }
-    else*/
+    else
+#endif
     {
         s_active->state();
     }
@@ -34,10 +38,6 @@ void plcRunSme()
 
 void plcChangeState( uint8_t newState )
 {
-    if ( newState >= s_count )
-    {
-        return;
-    }
     if ( s_active != nullptr )
     {
         if ( s_active->exit )
@@ -76,4 +76,21 @@ void plcResetTime()
 void plcSetFaultState(uint8_t id)
 {
     s_faultStateId = id;
+}
+
+uint8_t plcGetState()
+{
+    return s_active->id;
+}
+
+SState * plcGetFaultInfo()
+{
+    for (uint8_t i=0; i<s_count; i++)
+    {
+        if (s_states[i].id == s_faultId)
+        {
+            return &s_states[i];
+        }
+    }
+    return nullptr;
 }

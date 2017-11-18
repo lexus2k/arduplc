@@ -6,6 +6,8 @@
 
 #include <Arduino.h>
 
+//#define PLC_DEBUG
+
 #define TINY_STATE(id,name,func,timeout)  \
      {id, name, func ## Enter, func ## Run, func ## Exit, timeout}
 
@@ -25,7 +27,11 @@ void plcRunSme();
 
 void plcChangeState( uint8_t newState );
 
+uint8_t plcGetState();
+
 void plcSetFaultState(uint8_t id);
+
+SState * plcGetFaultInfo();
 
 uint32_t plcStateTime();
 
