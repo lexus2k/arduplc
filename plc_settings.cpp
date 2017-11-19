@@ -7,6 +7,7 @@ uint16_t shakeDelayMs = 100;
 uint8_t  shakeCount   = 3;
 uint16_t middleDelayMs = 200;
 uint16_t pressDelayMs = 5000;
+uint8_t  automaticMode = 0;
 
 #else
 
@@ -14,5 +15,6 @@ uint16_t shakeDelayMs = 1000;//100;
 uint8_t  shakeCount   = 3;
 uint16_t middleDelayMs = 200; //200;
 uint16_t pressDelayMs = 5000;
+uint8_t  automaticMode = 0;
 
 #endif

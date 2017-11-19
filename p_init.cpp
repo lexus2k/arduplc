@@ -12,6 +12,7 @@
 
 void initEnter()
 {
+    initPlcOutputs();
     g_lcd.clear();
     g_lcd.setCursor(0,0);
     g_lcd.print("HACTPOUKA ...");

@@ -21,7 +21,7 @@ typedef struct
     uint32_t timeout;
 } SState;
 
-bool plcInitSme(SState *states, uint8_t count);
+bool plcInitSme(SState *states, uint8_t count, uint8_t initalState);
 
 void plcRunSme();
 

@@ -31,13 +31,28 @@ void upRun()
 {
     if (readPlcInput( SENSOR_TOP ) == HIGH)
     {
-        plcChangeState( STATE_REMOVE_BRIQUETTE );
+        if (automaticMode)
+        {
+            plcChangeState( STATE_REMOVE_BRIQUETTE );
+        }
+        else
+        {
+            plcChangeState( STATE_MAIN_MENU );
+        }
     }
 }
 
 void upExit()
 {
     writePlcOutput( SOLENOID_UP, LOW );
+    if (!automaticMode)
+    {
+        /* Play pause melody */
+        tone(8, 200); delay(300);
+        tone(8, 500); delay(200);
+        tone(8, 1000); delay(100);
+        noTone(8);
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////

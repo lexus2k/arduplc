@@ -31,3 +31,10 @@ void initPlcOutputs()
     }
 }
 
+void plcDisableOutputs()
+{
+    for (uint8_t i=0; i<sizeof(s_outputPins); i++)
+    {
+        digitalWrite(s_outputPins[i], LOW);
+    }
+}

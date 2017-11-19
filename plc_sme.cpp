@@ -12,12 +12,12 @@ static SState *s_states;
 static SState *s_active = nullptr;
 static uint8_t s_count;
 
-bool plcInitSme(SState *states, uint8_t count)
+bool plcInitSme(SState *states, uint8_t count, uint8_t initalState)
 {
     if (!count) return false;
     s_states = states;
     s_count = count;
-    plcChangeState( 0 );
+    plcChangeState( initalState );
     return true;
 }
 

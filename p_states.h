@@ -7,6 +7,7 @@
 enum
 {
     STATE_POWER_ON,
+    STATE_MAIN_MENU,
     STATE_PLC_DIAG,
     STATE_FAULT,
 

@@ -38,7 +38,7 @@ void faultRun()
 {
     if (g_buttons.isShortPress())
     {
-        plcChangeState(STATE_POWER_ON);
+        plcChangeState(STATE_MAIN_MENU);
     }
 }
 

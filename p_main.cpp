@@ -1,4 +1,5 @@
 #include "p_power_on.h"
+#include "p_main_menu.h"
 #include "p_init.h"
 #include "p_diag.h"
 #include "p_fault.h"
@@ -30,7 +31,8 @@ SState programStates[] =
     TINY_STATE(STATE_UP_MIDDLE,        "upcnt",        upCenter,          10000),
     TINY_STATE(STATE_DOWN,             "down",         down,              10000),
     TINY_STATE(STATE_UP,               "up",           up,                10000),
-    TINY_STATE(STATE_FAULT,            "",             fault,             0),
+    TINY_STATE(STATE_FAULT,            "ft",           fault,             0),
+    TINY_STATE(STATE_MAIN_MENU,        "menu",         mainMenu,          0),
     TINY_STATE(STATE_PLC_DIAG,          "diag",        diag,              0),
 };
 
