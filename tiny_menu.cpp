@@ -73,6 +73,20 @@ void TinyMenu::drawMenuItem(uint8_t index)
         g_lcd.setCursor(1, index - m_scrollPosition);
     }
     g_lcd.print(m_items[index].text);
+    if (m_items[index].type != MENU_ITEM_NORMAL)
+    {
+        switch (m_items[index].type)
+        {
+            case MENU_ITEM_BOOL:
+                g_lcd.setCursor(16-4, index - m_scrollPosition);
+                g_lcd.print("=");
+                g_lcd.print(( *(static_cast<uint8_t *>(m_items[index].data)) == 0) ?
+                      "OFF": "ON");
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void TinyMenu::show()

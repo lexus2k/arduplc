@@ -11,35 +11,23 @@
 
 #include "tiny_menu.h"
 
-static char *autoStr = "ABTOMAT=   ";
-
 enum
 {
     MENU_START,
     MENU_AUTOMODE,
+    MENU_LOAD_CYCLES,
     MENU_DIAG,
 };
 
 static MenuItem menuItems[] =
 {
-    { MENU_START, "CTAPT" },
-    { MENU_AUTOMODE, autoStr },
-    { MENU_DIAG, "DUA\x00A2HOCTUKA"},
+    { MENU_START,       "CTAPT" },
+    { MENU_AUTOMODE,    "ABTOMAT", MENU_ITEM_BOOL, &automaticMode },
+    { MENU_LOAD_CYCLES, "3A\x00A2Py3KA" },
+    { MENU_DIAG,        "DUA\x00A2HOCTUKA"},
 };
 
 static TinyMenu mainMenu(menuItems, sizeof(menuItems) / sizeof(menuItems[0]));
-
-static void updateMenuItemsContent()
-{
-    if (automaticMode == 0)
-    {
-        strcpy(&autoStr[8], "OFF");
-    }
-    else
-    {
-        strcpy(&autoStr[8], "ON");
-    }
-}
 
 void mainMenuEnter()
 {
@@ -55,7 +43,6 @@ void mainMenuEnter()
     };
     g_lcd.createChar(0, arrow);
     g_lcd.backlight();
-    updateMenuItemsContent();
     mainMenu.show();
 }
 
@@ -91,7 +78,6 @@ void mainMenuRun()
                 break;
             case MENU_AUTOMODE:
                 automaticMode = automaticMode == 0 ? 1: 0;
-                updateMenuItemsContent();
                 mainMenu.show();
                 break;
             default:

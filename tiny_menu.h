@@ -2,10 +2,22 @@
 
 #include <stdint.h>
 
+enum
+{
+    MENU_ITEM_NORMAL = 0,
+    MENU_ITEM_SUBMENU,
+    MENU_ITEM_BOOL,
+    MENU_ITEM_UINT8,
+    MENU_ITEM_UINT16,
+};
+
+
 typedef struct MenuItem
 {
     uint8_t id;
     const char *text;
+    uint8_t type;
+    void *data;
 };
 
 class TinyMenu
