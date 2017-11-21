@@ -81,8 +81,30 @@ void TinyMenu::drawMenuItem(uint8_t index)
                 g_lcd.setCursor(16-4, index - m_scrollPosition);
                 g_lcd.print("=");
                 g_lcd.print(( *(static_cast<uint8_t *>(m_items[index].data)) == 0) ?
-                      "OFF": "ON");
+                      "HET": "\x02""A");
                 break;
+            case MENU_ITEM_UINT8:
+                g_lcd.setCursor(16-4, index - m_scrollPosition);
+                g_lcd.print("=");
+                g_lcd.print( *(static_cast<uint8_t *>(m_items[index].data)) );
+                break;
+            case MENU_ITEM_TIME16:
+            {
+                uint16_t t = *(static_cast<uint16_t *>(m_items[index].data));
+                g_lcd.setCursor(16-6, index - m_scrollPosition);
+                g_lcd.print(":");
+                if (t<1000)
+                {
+                    g_lcd.print( t );
+                    g_lcd.print( "mc" );
+                }
+                else
+                {
+                    g_lcd.print( (t+499)/1000 );
+                    g_lcd.print( "cek" );
+                }
+                break;
+            }
             default:
                 break;
         }

@@ -15,7 +15,12 @@ enum
 {
     MENU_START,
     MENU_AUTOMODE,
+    MENU_PRE_PRESS,
     MENU_LOAD_CYCLES,
+    MENU_PRESS_TIME,
+    MENU_SHAKE_TIME,
+    MENU_UP_TIME,
+    MENU_SAVE_SETTINGS,
     MENU_DIAG,
 };
 
@@ -23,13 +28,18 @@ static MenuItem menuItems[] =
 {
     { MENU_START,       "CTAPT" },
     { MENU_AUTOMODE,    "ABTOMAT", MENU_ITEM_BOOL, &automaticMode },
-    { MENU_LOAD_CYCLES, "3A\x00A2Py3KA" },
-    { MENU_DIAG,        "DUA\x00A2HOCTUKA"},
+    { MENU_PRE_PRESS,   "\x01O\x02\x01PECCOB.", MENU_ITEM_BOOL, &prePressingMode },
+    { MENU_LOAD_CYCLES, "\x01POXO\x02""bl", MENU_ITEM_UINT8, &shakeCount },
+    { MENU_PRESS_TIME,  "\x02""ABUTb", MENU_ITEM_TIME16, &pressDelayMs },
+    { MENU_SHAKE_TIME,  "3A\xA2Py3.", MENU_ITEM_TIME16, &shakeDelayMs },
+    { MENU_UP_TIME,     "\01O\02bEM", MENU_ITEM_TIME16, &middleDelayMs },
+    { MENU_SAVE_SETTINGS, "COXPAHUTb" },
+    { MENU_DIAG,        "\x02UA\xA2HOCTUKA"},
 };
 
 static TinyMenu mainMenu(menuItems, sizeof(menuItems) / sizeof(menuItems[0]));
 
-void mainMenuEnter()
+static void registerArrow()
 {
     uint8_t arrow[8] = {
         B00001000,
@@ -42,6 +52,43 @@ void mainMenuEnter()
         B00000000,
     };
     g_lcd.createChar(0, arrow);
+}
+
+static void registerP()
+{
+    uint8_t p_letter[8] = {
+        B00011111,
+        B00010001,
+        B00010001,
+        B00010001,
+        B00010001,
+        B00010001,
+        B00010001,
+        B00000000,
+    };
+    g_lcd.createChar(1, p_letter);
+}
+
+static void registerD()
+{
+    uint8_t d_letter[8] = {
+        B00000111,
+        B00000101,
+        B00000101,
+        B00001001,
+        B00001001,
+        B00001001,
+        B00011111,
+        B00010001,
+    };
+    g_lcd.createChar(2, d_letter);
+}
+
+void mainMenuEnter()
+{
+    registerArrow();
+    registerP();
+    registerD();
     g_lcd.backlight();
     mainMenu.show();
 }
@@ -65,6 +112,13 @@ void mainMenuRun()
             case MENU_START:
                 plcChangeState(STATE_INIT);
                 break;
+            case MENU_SAVE_SETTINGS:
+                saveSettings();
+                tone(8, 1000); delay(300);
+                tone(8, 500); delay(200);
+                tone(8, 200); delay(100);
+                noTone(8);
+                break;
             default:
                 break;
         }
@@ -78,6 +132,26 @@ void mainMenuRun()
                 break;
             case MENU_AUTOMODE:
                 automaticMode = automaticMode == 0 ? 1: 0;
+                mainMenu.show();
+                break;
+            case MENU_PRE_PRESS:
+                prePressingMode = prePressingMode == 0 ? 1: 0;
+                mainMenu.show();
+                break;
+            case MENU_LOAD_CYCLES:
+                shakeCount++; if (shakeCount>5) shakeCount=2;
+                mainMenu.show();
+                break;
+            case MENU_PRESS_TIME:
+                pressDelayMs+=1000; if (pressDelayMs>10000) pressDelayMs = 1000;
+                mainMenu.show();
+                break;
+            case MENU_SHAKE_TIME:
+                shakeDelayMs+=100; if (shakeDelayMs>900) shakeDelayMs = 100;
+                mainMenu.show();
+                break;
+            case MENU_UP_TIME:
+                middleDelayMs+=50; if (middleDelayMs>400) middleDelayMs = 100;
                 mainMenu.show();
                 break;
             default:

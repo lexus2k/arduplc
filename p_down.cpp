@@ -64,7 +64,14 @@ void downCenterRun()
     {
         plcChangeState( STATE_SHAKE_RIGHT );
         g_shakes = shakeCount;
-        g_finalPress = false;
+        if (prePressingMode)
+        {
+            g_finalPress = false;
+        }
+        else
+        {
+            g_finalPress = true;
+        }
     }
 }
 

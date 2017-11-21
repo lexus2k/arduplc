@@ -4,6 +4,7 @@
 
 #include "plc_inputs.h"
 #include "plc_outputs.h"
+#include "plc_settings.h"
 #include "plc_lcd.h"
 #include "plc_buttons.h"
 #include "plc_sme.h"
@@ -13,6 +14,7 @@ void powerOnEnter()
     pinMode(8, OUTPUT); // sound
     initPlcInputs();
     initPlcOutputs();
+    loadSettings();
     g_buttons.init();
     g_lcd.init();
     g_lcd.backlight();
