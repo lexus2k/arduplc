@@ -112,6 +112,9 @@ void mainMenuRun()
             case MENU_START:
                 plcChangeState(STATE_INIT);
                 break;
+            case MENU_DIAG:
+                plcChangeState(STATE_PLC_DIAG);
+                break;
             case MENU_SAVE_SETTINGS:
                 saveSettings();
                 tone(8, 1000); delay(300);
@@ -127,9 +130,6 @@ void mainMenuRun()
     {
         switch (mainMenu.selection())
         {
-            case MENU_DIAG:
-                plcChangeState(STATE_PLC_DIAG);
-                break;
             case MENU_AUTOMODE:
                 automaticMode = automaticMode == 0 ? 1: 0;
                 mainMenu.show();
