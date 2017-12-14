@@ -20,7 +20,7 @@ bool g_finalPress;
 SState programStates[] =
 {
 //            |        ID             |   NAME     |   FUNCTION        | TIMEOUT(MS)  |
-    TINY_STATE(STATE_POWER_ON,         "powerOn",      powerOn,           0),
+    TINY_STATE(STATE_POWER_ON,         "pwr",          powerOn,           0),
     TINY_STATE(STATE_INIT,             "init",         init,              10000),
     TINY_STATE(STATE_REMOVE_BRIQUETTE, "breq",         removeBriquette,   2000),
     TINY_STATE(STATE_DOWN_CENTER,      "center",       downCenter,        7000),

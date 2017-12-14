@@ -15,7 +15,9 @@ void faultEnter()
 {
     initPlcOutputs();
     g_lcd.clear();
+    delay(10);
     g_lcd.backlight();
+    delay(10);
     g_lcd.setCursor(0,0);
     g_lcd.print("!!! ERROR !!!");
 

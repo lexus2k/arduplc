@@ -14,6 +14,7 @@
 enum
 {
     MENU_START,
+    MENU_STATISTICS,
     MENU_AUTOMODE,
     MENU_PRE_PRESS,
     MENU_LOAD_CYCLES,
@@ -22,11 +23,14 @@ enum
     MENU_UP_TIME,
     MENU_SAVE_SETTINGS,
     MENU_DIAG,
+    MENU_RESET,
+    MENU_MANUAL,
 };
 
 static MenuItem menuItems[] =
 {
     { MENU_START,       "CTAPT" },
+    { MENU_STATISTICS,  "CTATUCTUKA" },
     { MENU_AUTOMODE,    "ABTOMAT", MENU_ITEM_BOOL, &automaticMode },
     { MENU_PRE_PRESS,   "\x01O\x02\x01PECCOB.", MENU_ITEM_BOOL, &prePressingMode },
     { MENU_LOAD_CYCLES, "\x01POXO\x02""bl", MENU_ITEM_UINT8, &shakeCount },
@@ -34,6 +38,8 @@ static MenuItem menuItems[] =
     { MENU_SHAKE_TIME,  "3A\xA2Py3.", MENU_ITEM_TIME16, &shakeDelayMs },
     { MENU_UP_TIME,     "\01O\02bEM", MENU_ITEM_TIME16, &middleDelayMs },
     { MENU_SAVE_SETTINGS, "COXPAHUTb" },
+    { MENU_RESET,       "CbPOC" },
+    { MENU_MANUAL,      "MANUAL" },
     { MENU_DIAG,        "\x02UA\xA2HOCTUKA"},
 };
 
@@ -112,7 +118,12 @@ void mainMenuRun()
             case MENU_START:
                 plcChangeState(STATE_INIT);
                 break;
+            case MENU_MANUAL:
+                manualModeDiag = 1;
+                plcChangeState(STATE_PLC_DIAG);
+                break;
             case MENU_DIAG:
+                manualModeDiag = 0;
                 plcChangeState(STATE_PLC_DIAG);
                 break;
             case MENU_SAVE_SETTINGS:
@@ -121,6 +132,14 @@ void mainMenuRun()
                 tone(8, 500); delay(200);
                 tone(8, 200); delay(100);
                 noTone(8);
+                break;
+            case MENU_RESET:
+                loadSettings();
+                tone(8, 1000); delay(300);
+                tone(8, 500); delay(200);
+                tone(8, 200); delay(100);
+                noTone(8);
+                mainMenu.show();
                 break;
             default:
                 break;

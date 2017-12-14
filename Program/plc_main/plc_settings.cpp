@@ -23,6 +23,8 @@ uint8_t  prePressingMode = 1;
 
 #endif
 
+uint8_t  manualModeDiag = 0;
+
 void saveSettings()
 {
     EEPROM.put(0x10, shakeDelayMs);
