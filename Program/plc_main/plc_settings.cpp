@@ -3,27 +3,15 @@
 #include <EEPROM.h>
 
 
-#ifndef PLC_DEBUG
-
 uint16_t shakeDelayMs = 100;
 uint8_t  shakeCount   = 3;
 uint16_t middleDelayMs = 200;
 uint16_t pressDelayMs = 5000;
 uint8_t  automaticMode = 0;
 uint8_t  prePressingMode = 1;
-
-#else
-
-uint16_t shakeDelayMs = 1000;//100;
-uint8_t  shakeCount   = 3;
-uint16_t middleDelayMs = 200; //200;
-uint16_t pressDelayMs = 5000;
-uint8_t  automaticMode = 0;
-uint8_t  prePressingMode = 1;
-
-#endif
-
 uint8_t  manualModeDiag = 0;
+
+SPlcStats g_stats = { 0 };
 
 void saveSettings()
 {

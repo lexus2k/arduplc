@@ -6,8 +6,6 @@
 
 #include <Arduino.h>
 
-//#define PLC_DEBUG
-
 #define TINY_STATE(id,name,func,timeout)  \
      {id, name, func ## Enter, func ## Run, func ## Exit, timeout}
 

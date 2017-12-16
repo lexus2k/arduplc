@@ -2,6 +2,7 @@
 
 #include "p_solenoids.h"
 #include "p_states.h"
+#include "p_sensors.h"
 #include "plc_inputs.h"
 #include "plc_outputs.h"
 #include "plc_lcd.h"

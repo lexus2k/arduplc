@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-const static uint8_t s_inputPins[] =
+static const uint8_t s_inputPins[] =
 {
     10,
     11,

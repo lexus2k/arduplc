@@ -31,6 +31,7 @@ void upRun()
 {
     if (readPlcInput( SENSOR_TOP ) == HIGH)
     {
+        g_stats.cycles++;
         if (automaticMode)
         {
             plcChangeState( STATE_REMOVE_BRIQUETTE );

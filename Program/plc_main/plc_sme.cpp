@@ -23,14 +23,12 @@ bool plcInitSme(SState *states, uint8_t count, uint8_t initalState)
 
 void plcRunSme()
 {
-#ifndef PLC_DEBUG
     if ((s_active->timeout) && (millis() - s_timestamp > s_active->timeout))
     {
         s_faultId = s_active->id;
         plcChangeState( s_faultStateId );
     }
     else
-#endif
     {
         s_active->state();
     }
