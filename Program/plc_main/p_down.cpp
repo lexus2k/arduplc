@@ -33,6 +33,10 @@ void downTempRun()
     {
         plcChangeState( STATE_UP_MIDDLE );
     }
+    if (readPlcInput( SENSOR_BOTTOM ) == HIGH)
+    {
+        plcFault();
+    }
 }
 
 void downTempExit()
@@ -72,6 +76,10 @@ void downCenterRun()
         {
             g_finalPress = true;
         }
+    }
+    if (readPlcInput( SENSOR_BOTTOM ) == HIGH)
+    {
+        plcFault();
     }
 }
 

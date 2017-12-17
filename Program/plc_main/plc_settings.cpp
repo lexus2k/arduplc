@@ -6,9 +6,9 @@
 uint16_t shakeDelayMs = 100;
 uint8_t  shakeCount   = 3;
 uint16_t middleDelayMs = 200;
-uint16_t pressDelayMs = 5000;
+uint16_t pressDelayMs = 2000;
 uint8_t  automaticMode = 0;
-uint8_t  prePressingMode = 1;
+uint8_t  prePressingMode = 0;
 uint8_t  manualModeDiag = 0;
 
 SPlcStats g_stats = { 0 };

@@ -34,6 +34,14 @@ void plcRunSme()
     }
 }
 
+
+void plcFault()
+{
+    s_faultId = s_active->id;
+    plcChangeState( s_faultStateId );
+}
+
+
 void plcChangeState( uint8_t newState )
 {
     if ( s_active != nullptr )

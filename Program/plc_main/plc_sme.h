@@ -25,6 +25,8 @@ void plcRunSme();
 
 void plcChangeState( uint8_t newState );
 
+void plcFault();
+
 uint8_t plcGetState();
 
 void plcSetFaultState(uint8_t id);

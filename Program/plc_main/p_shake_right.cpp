@@ -31,7 +31,7 @@ void shakeRightRun()
     }
     if (readPlcInput( SENSOR_REMOVED ) == HIGH)
     {
-        plcChangeState( STATE_FAULT );
+        plcFault();
     }
 }
 

@@ -82,6 +82,10 @@ void upCenterRun()
         writePlcOutput( SOLENOID_UP, LOW );
         plcChangeState( STATE_SHAKE_LEFT );
     }
+    if (readPlcInput( SENSOR_TOP ) == HIGH)
+    {
+        plcFault();
+    }
 }
 
 void upCenterExit()
