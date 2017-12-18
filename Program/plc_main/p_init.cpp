@@ -1,3 +1,22 @@
+/*
+    Copyright (C) 2017 - 2018 Alexey Dynda
+
+    This file is part of Ardu PLC project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "p_init.h"
 
 #include "p_states.h"
@@ -17,7 +36,7 @@ void initEnter()
     g_lcd.noBacklight();
     g_lcd.setCursor(0,0);
     g_lcd.print("HACTPOUKA ...");
-    plcSetFaultState(STATE_FAULT);
+    plcSetFaultJump( STATE_FAULT );
     tone(8, 200, 500);
     delay(1000);
     tone(8, 200, 500);
@@ -28,10 +47,12 @@ void initEnter()
     plcResetTime();
     if (readPlcInput(SENSOR_REMOVED) == LOW)
     {
+        writePlcOutput( SOLENOID_COMMON, HIGH );
         writePlcOutput( SOLENOID_REMOVE, HIGH );
     }
     if (readPlcInput(SENSOR_TOP) == LOW)
     {
+        writePlcOutput( SOLENOID_COMMON, HIGH );
         writePlcOutput( SOLENOID_UP, HIGH );
     }
 }
@@ -49,10 +70,6 @@ void initRun()
         writePlcOutput( SOLENOID_REMOVE, LOW );
         passed++;
     }
-/*    else if (plcStateTime() >= 2000)
-    {
-        plcChangeState( STATE_FAULT );
-    }*/
     if ( passed == 2 )
     {
         plcChangeState( STATE_REMOVE_BRIQUETTE );
@@ -61,6 +78,7 @@ void initRun()
 
 void initExit()
 {
+    writePlcOutput( SOLENOID_COMMON, LOW );
     writePlcOutput( SOLENOID_REMOVE, LOW );
     writePlcOutput( SOLENOID_UP, LOW );
 }

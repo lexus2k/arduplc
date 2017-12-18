@@ -1,3 +1,22 @@
+/*
+    Copyright (C) 2017 - 2018 Alexey Dynda
+
+    This file is part of Ardu PLC project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "plc_sme.h"
 
 #include "plc_inputs.h"
@@ -6,8 +25,8 @@
 #include <Arduino.h>
 
 static uint32_t s_timestamp = 0;
-static uint8_t  s_faultStateId = 0;
-static uint8_t  s_faultId = 0;
+static uint8_t  s_faultJumpId = 0;
+static uint8_t  s_faultedStateId = 0;
 static SState *s_states;
 static SState *s_active = nullptr;
 static uint8_t s_count;
@@ -25,8 +44,8 @@ void plcRunSme()
 {
     if ((s_active->timeout) && (millis() - s_timestamp > s_active->timeout))
     {
-        s_faultId = s_active->id;
-        plcChangeState( s_faultStateId );
+        s_faultedStateId = s_active->id;
+        plcChangeState( s_faultJumpId );
     }
     else
     {
@@ -37,8 +56,8 @@ void plcRunSme()
 
 void plcFault()
 {
-    s_faultId = s_active->id;
-    plcChangeState( s_faultStateId );
+    s_faultedStateId = s_active->id;
+    plcChangeState( s_faultJumpId );
 }
 
 
@@ -79,9 +98,9 @@ void plcResetTime()
     s_timestamp = millis();
 }
 
-void plcSetFaultState(uint8_t id)
+void plcSetFaultJump(uint8_t id)
 {
-    s_faultStateId = id;
+    s_faultJumpId = id;
 }
 
 uint8_t plcGetState()
@@ -93,7 +112,7 @@ SState * plcGetFaultInfo()
 {
     for (uint8_t i=0; i<s_count; i++)
     {
-        if (s_states[i].id == s_faultId)
+        if (s_states[i].id == s_faultedStateId)
         {
             return &s_states[i];
         }
