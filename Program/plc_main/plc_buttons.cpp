@@ -40,7 +40,7 @@
   } */
 
 
-const int16_t buttons[5]    =  { 0,   143,  327,  504, 740 };
+const int16_t buttons[5]    =  { 0,   143,  330,  505, 745 };
 
 TinyAnalogButtons g_buttons(A3, buttons, sizeof(buttons)/sizeof(buttons[0]) );
 

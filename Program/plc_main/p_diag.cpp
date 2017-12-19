@@ -32,15 +32,19 @@
 #include <Arduino.h>
 #include <Wire.h>
 
+static uint8_t s_up = LOW;
+static uint8_t s_down = LOW;
+static uint8_t s_remove = LOW;
+static uint8_t s_pull_out = LOW;
+static uint8_t s_common = LOW;
 
 static void plc_print_status()
 {
     char str[16] = "- - - - - - -";
-    g_lcd.setCursor(0, 0);
-    g_lcd.print("I 1 2 3 4 5 6 7");
     for(uint8_t i=0; i<plcInputsCount();i++)
     {
-       str[i*2] = (readPlcInput(i) == HIGH) ? '*' : '-';
+         int input = readPlcInput(i);
+         str[i*2] = (input == HIGH) ? '*' : '-';
     }
     g_lcd.setCursor(2, 1);
     g_lcd.print(str);
@@ -62,7 +66,14 @@ static void plc_change_output()
 
 void diagEnter()
 {
+    s_up = LOW;
+    s_down = LOW;
+    s_pull_out = LOW;
+    s_remove = LOW;
+    s_common = LOW;
     g_lcd.clear();
+    g_lcd.setCursor(0, 0);
+    g_lcd.print("I 1 2 3 4 5 6 7");
     plcResetTime();
     s_output = 0;
     if (!manualModeDiag)
@@ -73,17 +84,38 @@ void diagEnter()
 
 void diagRun()
 {
+/*    int aa = analogRead( A3 );
+    g_lcd.setCursor(0, 0);
+    g_lcd.print(aa);
+    g_lcd.print("   "); */
+
     plc_print_status();
     if (manualModeDiag)
     {
-        writePlcOutput( SOLENOID_UP, (g_buttons.isButtonDown( PLC_BUTTON_UP) &&
-                                     (readPlcInput(SENSOR_TOP) == LOW) ) ? HIGH : LOW );
-        writePlcOutput( SOLENOID_DOWN, (g_buttons.isButtonDown( PLC_BUTTON_DOWN) &&
-                                     (readPlcInput(SENSOR_BOTTOM) == LOW)) ? HIGH : LOW );
-        writePlcOutput( SOLENOID_REMOVE, (g_buttons.isButtonDown( PLC_BUTTON_RIGHT) &&
-                                     (readPlcInput(SENSOR_REMOVED) == LOW)) ? HIGH : LOW );
-        writePlcOutput( SOLENOID_PULL_OUT, (g_buttons.isButtonDown( PLC_BUTTON_LEFT) &&
-                                     (readPlcInput(SENSOR_PULLED) == LOW))  ? HIGH : LOW );
+        uint8_t state;
+        state = (g_buttons.isButtonDown( PLC_BUTTON_UP) && (readPlcInput(SENSOR_TOP) == LOW)) ? HIGH: LOW;
+        if (s_up != state) writePlcOutput( SOLENOID_UP, state);
+        s_up = state;
+
+        state = (g_buttons.isButtonDown( PLC_BUTTON_DOWN) && (readPlcInput(SENSOR_BOTTOM) == LOW)) ? HIGH: LOW;
+        if (s_down != state) writePlcOutput( SOLENOID_DOWN, state);
+        s_down = state;
+
+        state = (g_buttons.isButtonDown( PLC_BUTTON_RIGHT) && (readPlcInput(SENSOR_REMOVED) == LOW)) ? HIGH: LOW;
+        if (s_remove != state) writePlcOutput( SOLENOID_REMOVE, state);
+        s_remove = state;
+
+        state = (g_buttons.isButtonDown( PLC_BUTTON_LEFT) && (readPlcInput(SENSOR_PULLED) == LOW)) ? HIGH: LOW;
+        if (s_pull_out != state) writePlcOutput( SOLENOID_PULL_OUT, state);
+        s_pull_out = state;
+
+        state = LOW;
+        if ((s_up == HIGH) || (s_down == HIGH) || (s_pull_out == HIGH) || (s_remove == HIGH))
+        {
+             state = HIGH;
+        }
+        if (s_common != state) writePlcOutput( SOLENOID_COMMON, state );
+        s_common = state;
     }
     else
     {
@@ -97,5 +129,6 @@ void diagRun()
 
 void diagExit()
 {
+    initPlcInputs();
 }
 

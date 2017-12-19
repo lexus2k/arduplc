@@ -35,6 +35,7 @@ extern uint16_t pressDelayMs;
 extern uint8_t  automaticMode;
 extern uint8_t  prePressingMode;
 extern uint8_t  manualModeDiag;
+extern uint8_t  enableTimings;
 extern SPlcStats g_stats;
 
 

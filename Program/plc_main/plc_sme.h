@@ -46,6 +46,10 @@ void plcChangeState( uint8_t newState );
 
 void plcFault();
 
+void plcEnableStatesTimeout();
+
+void plcDisableStatesTimeout();
+
 uint8_t plcGetState();
 
 void plcSetFaultJump(uint8_t id);

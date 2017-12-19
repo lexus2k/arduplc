@@ -26,11 +26,20 @@
 #include "plc_inputs.h"
 #include "plc_outputs.h"
 #include "plc_lcd.h"
+#include "plc_settings.h"
 
 #include <Arduino.h>
 
 void initEnter()
 {
+    if ( enableTimings )
+    {
+        plcEnableStatesTimeout();
+    }
+    else
+    {
+        plcDisableStatesTimeout();
+    }
     initPlcOutputs();
     g_lcd.clear();
     g_lcd.noBacklight();

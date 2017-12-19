@@ -40,6 +40,7 @@ enum
     MENU_PRESS_TIME,
     MENU_SHAKE_TIME,
     MENU_UP_TIME,
+    MENU_TIMINGS,
     MENU_SAVE_SETTINGS,
     MENU_DIAG,
     MENU_RESET,
@@ -56,6 +57,7 @@ static MenuItem menuItems[] =
     { MENU_PRESS_TIME,  "\x02""ABUTb", MENU_ITEM_TIME16, &pressDelayMs },
     { MENU_SHAKE_TIME,  "3A\xA2Py3.", MENU_ITEM_TIME16, &shakeDelayMs },
     { MENU_UP_TIME,     "\01O\02bEM", MENU_ITEM_TIME16, &middleDelayMs },
+    { MENU_TIMINGS,     "TAUMUH\xA2U", MENU_ITEM_BOOL, &enableTimings },
     { MENU_SAVE_SETTINGS, "COXPAHUTb" },
     { MENU_RESET,       "CbPOC" },
     { MENU_MANUAL,      "MANUAL" },
@@ -151,6 +153,10 @@ void mainMenuRun()
                 tone(8, 500); delay(200);
                 tone(8, 200); delay(100);
                 noTone(8);
+                break;
+            case MENU_TIMINGS:
+                enableTimings = enableTimings == 0 ? 1: 0;
+                mainMenu.show();
                 break;
             case MENU_RESET:
                 loadSettings();

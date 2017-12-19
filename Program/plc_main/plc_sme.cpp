@@ -30,6 +30,7 @@ static uint8_t  s_faultedStateId = 0;
 static SState *s_states;
 static SState *s_active = nullptr;
 static uint8_t s_count;
+static bool    s_useTimeouts = true;
 
 bool plcInitSme(SState *states, uint8_t count, uint8_t initalState)
 {
@@ -42,7 +43,7 @@ bool plcInitSme(SState *states, uint8_t count, uint8_t initalState)
 
 void plcRunSme()
 {
-    if ((s_active->timeout) && (millis() - s_timestamp > s_active->timeout))
+    if ((s_active->timeout) && (millis() - s_timestamp > s_active->timeout) && (s_useTimeouts))
     {
         s_faultedStateId = s_active->id;
         plcChangeState( s_faultJumpId );
@@ -58,6 +59,18 @@ void plcFault()
 {
     s_faultedStateId = s_active->id;
     plcChangeState( s_faultJumpId );
+}
+
+
+void plcEnableStatesTimeout()
+{
+    s_useTimeouts = true;
+}
+
+
+void plcDisableStatesTimeout()
+{
+    s_useTimeouts = false;
 }
 
 
