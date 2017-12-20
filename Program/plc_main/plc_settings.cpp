@@ -42,7 +42,6 @@ void saveSettings()
     EEPROM.put(0x20, shakeCount);
     EEPROM.put(0x21, automaticMode);
     EEPROM.put(0x22, prePressingMode);
-    EEPROM.put(0x23, enableTimings);
 }
 
 void loadSettings()
@@ -55,5 +54,4 @@ void loadSettings()
     EEPROM.get(0x20, val8); if (val8 != 0xFF) shakeCount = val8;
     EEPROM.get(0x21, val8); if (val8 != 0xFF) automaticMode = val8;
     EEPROM.get(0x22, val8); if (val8 != 0xFF) prePressingMode = val8;
-    EEPROM.get(0x23, val8); if (val8 != 0xFF) enableTimings = val8;
 }

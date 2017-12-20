@@ -38,7 +38,6 @@ void shakeRightEnter()
 {
     if (readPlcInput( SENSOR_REMOVED ) == LOW)
     {
-        writePlcOutput( SOLENOID_COMMON, HIGH );
         writePlcOutput( SOLENOID_REMOVE, HIGH );
     }
 }
@@ -57,7 +56,6 @@ void shakeRightRun()
 
 void shakeRightExit()
 {
-    writePlcOutput( SOLENOID_COMMON, LOW );
     writePlcOutput( SOLENOID_REMOVE, LOW );
 }
 
@@ -69,7 +67,6 @@ void removeEnter()
 {
     if (readPlcInput( SENSOR_REMOVED ) == LOW)
     {
-        writePlcOutput( SOLENOID_COMMON, HIGH );
         writePlcOutput( SOLENOID_REMOVE, HIGH );
     }
 }
@@ -91,7 +88,6 @@ void removeRun()
 
 void removeExit()
 {
-    writePlcOutput( SOLENOID_COMMON, LOW );
     writePlcOutput( SOLENOID_REMOVE, LOW );
 }
 

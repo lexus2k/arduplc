@@ -36,7 +36,6 @@ static uint8_t s_up = LOW;
 static uint8_t s_down = LOW;
 static uint8_t s_remove = LOW;
 static uint8_t s_pull_out = LOW;
-static uint8_t s_common = LOW;
 
 static void plc_print_status()
 {
@@ -70,7 +69,6 @@ void diagEnter()
     s_down = LOW;
     s_pull_out = LOW;
     s_remove = LOW;
-    s_common = LOW;
     g_lcd.clear();
     g_lcd.setCursor(0, 0);
     g_lcd.print("I 1 2 3 4 5 6 7");
@@ -108,14 +106,6 @@ void diagRun()
         state = (g_buttons.isButtonDown( PLC_BUTTON_LEFT) && (readPlcInput(SENSOR_PULLED) == LOW)) ? HIGH: LOW;
         if (s_pull_out != state) writePlcOutput( SOLENOID_PULL_OUT, state);
         s_pull_out = state;
-
-        state = LOW;
-        if ((s_up == HIGH) || (s_down == HIGH) || (s_pull_out == HIGH) || (s_remove == HIGH))
-        {
-             state = HIGH;
-        }
-        if (s_common != state) writePlcOutput( SOLENOID_COMMON, state );
-        s_common = state;
     }
     else
     {

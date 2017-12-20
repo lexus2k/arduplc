@@ -55,12 +55,12 @@ static MenuItem menuItems[] =
     { MENU_PRE_PRESS,   "\x01O\x02\x01PECCOB.", MENU_ITEM_BOOL, &prePressingMode },
     { MENU_LOAD_CYCLES, "\x01POXO\x02""bl", MENU_ITEM_UINT8, &shakeCount },
     { MENU_PRESS_TIME,  "\x02""ABUTb", MENU_ITEM_TIME16, &pressDelayMs },
-    { MENU_SHAKE_TIME,  "3A\xA2Py3.", MENU_ITEM_TIME16, &shakeDelayMs },
-    { MENU_UP_TIME,     "\01O\02bEM", MENU_ITEM_TIME16, &middleDelayMs },
-    { MENU_TIMINGS,     "TAUMUH\xA2U", MENU_ITEM_BOOL, &enableTimings },
+    { MENU_SHAKE_TIME,  "B\x01PABO",   MENU_ITEM_TIME16, &shakeDelayMs },
+    { MENU_UP_TIME,     "\01O\02bEM",  MENU_ITEM_TIME16, &middleDelayMs },
     { MENU_SAVE_SETTINGS, "COXPAHUTb" },
-    { MENU_RESET,       "CbPOC" },
+    { MENU_RESET,       "3A\xA2Py3UTb" },
     { MENU_MANUAL,      "MANUAL" },
+    { MENU_TIMINGS,     "!\x01O\x02""COE\x02.", MENU_ITEM_BOOL,   &enableTimings },
     { MENU_DIAG,        "\x02UA\xA2HOCTUKA"},
 };
 

@@ -56,12 +56,10 @@ void initEnter()
     plcResetTime();
     if (readPlcInput(SENSOR_REMOVED) == LOW)
     {
-        writePlcOutput( SOLENOID_COMMON, HIGH );
         writePlcOutput( SOLENOID_REMOVE, HIGH );
     }
     if (readPlcInput(SENSOR_TOP) == LOW)
     {
-        writePlcOutput( SOLENOID_COMMON, HIGH );
         writePlcOutput( SOLENOID_UP, HIGH );
     }
 }
@@ -87,7 +85,6 @@ void initRun()
 
 void initExit()
 {
-    writePlcOutput( SOLENOID_COMMON, LOW );
     writePlcOutput( SOLENOID_REMOVE, LOW );
     writePlcOutput( SOLENOID_UP, LOW );
 }

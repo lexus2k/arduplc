@@ -25,7 +25,5 @@ enum
     SOLENOID_DOWN = 1,
     SOLENOID_REMOVE = 2,
     SOLENOID_PULL_OUT = 3,
-    SOLENOID_COMMON = 4,
-    SOLENOID_MAX,
 };
 

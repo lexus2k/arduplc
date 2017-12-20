@@ -42,7 +42,6 @@ void upEnter()
     plcResetTime();
     if (readPlcInput( SENSOR_TOP ) == LOW)
     {
-        writePlcOutput( SOLENOID_COMMON, HIGH );
         writePlcOutput( SOLENOID_UP, HIGH );
     }
 }
@@ -65,7 +64,6 @@ void upRun()
 
 void upExit()
 {
-    writePlcOutput( SOLENOID_COMMON, LOW );
     writePlcOutput( SOLENOID_UP, LOW );
     if (!automaticMode)
     {
@@ -89,7 +87,6 @@ void upCenterEnter()
     plcResetTime();
     if (readPlcInput( SENSOR_MIDDLE ) == LOW)
     {
-        writePlcOutput( SOLENOID_COMMON, HIGH );
         writePlcOutput( SOLENOID_UP, HIGH );
     }
 }
@@ -112,7 +109,6 @@ void upCenterRun()
 
 void upCenterExit()
 {
-    writePlcOutput( SOLENOID_COMMON, LOW );
     writePlcOutput( SOLENOID_UP, LOW );
     g_lcd.setCursor(0,0);
     g_lcd.print("CbIPbE ...");

@@ -38,7 +38,6 @@ void shakeLeftEnter()
 {
     if (readPlcInput( SENSOR_PULLED ) == LOW)
     {
-        writePlcOutput( SOLENOID_COMMON, HIGH );
         writePlcOutput( SOLENOID_PULL_OUT, HIGH );
     }
 }
@@ -61,7 +60,6 @@ void shakeLeftRun()
 
 void shakeLeftExit()
 {
-    writePlcOutput( SOLENOID_COMMON, LOW );
     writePlcOutput( SOLENOID_PULL_OUT, LOW );
     delay(loadDelayMs);
 }
@@ -78,7 +76,6 @@ void removeBriquetteEnter()
     plcResetTime();
     if (readPlcInput( SENSOR_PULLED ) == LOW)
     {
-        writePlcOutput( SOLENOID_COMMON, HIGH );
         writePlcOutput( SOLENOID_PULL_OUT, HIGH );
     }
 }
@@ -93,7 +90,6 @@ void removeBriquetteRun()
 
 void removeBriquetteExit()
 {
-    writePlcOutput( SOLENOID_COMMON, LOW );
     writePlcOutput( SOLENOID_PULL_OUT, LOW );
 }
 
