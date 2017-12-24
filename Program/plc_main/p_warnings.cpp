@@ -17,13 +17,38 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "p_warnings.h"
 
-void upEnter();
-void upRun();
-void upExit();
+#include "p_states.h"
+#include "p_main_menu.h"
 
-void upCenterTempEnter();
-void upCenterTempRun();
-void upCenterTempExit();
+#include "plc_inputs.h"
+#include "plc_outputs.h"
+#include "plc_settings.h"
+#include "plc_lcd.h"
+#include "plc_buttons.h"
+#include "plc_sme.h"
 
+void warningDisconnectEnter()
+{
+    g_lcd.backlight();
+    g_lcd.clear();
+    g_lcd.setCursor(0, 0);
+    g_lcd.print("OTCOE\x02""UHUTE");
+    g_lcd.setCursor(0, 1);
+    g_lcd.print("CTAHOK! WAIT");
+}
+
+void warningDisconnectRun()
+{
+    if (g_buttons.isShortPress())
+    {
+        plcChangeState(STATE_MAIN_MENU);
+    }
+}
+
+void warningDisconnectExit()
+{
+    mainMenu.setSelection( MENU_TIMINGS );
+    mainMenu.show();
+}

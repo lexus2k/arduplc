@@ -19,11 +19,8 @@
 
 #pragma once
 
-void upEnter();
-void upRun();
-void upExit();
 
-void upCenterTempEnter();
-void upCenterTempRun();
-void upCenterTempExit();
+void warningDisconnectEnter();
+void warningDisconnectRun();
+void warningDisconnectExit();
 

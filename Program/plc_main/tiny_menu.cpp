@@ -91,7 +91,14 @@ void TinyMenu::drawMenuItem(uint8_t index)
     {
         g_lcd.setCursor(1, index - m_scrollPosition);
     }
-    g_lcd.print(m_items[index].text);
+    if (m_items[index].text)
+    {
+        g_lcd.print(m_items[index].text);
+    }
+    else
+    {
+        g_lcd.print("------------");
+    }
     if (m_items[index].type != MENU_ITEM_NORMAL)
     {
         switch (m_items[index].type)
@@ -145,3 +152,16 @@ uint8_t TinyMenu::selection()
 {
     return m_items[m_selection].id;
 }
+
+void TinyMenu::setSelection(uint8_t id)
+{
+    for (uint8_t i=0; i<m_count; i++)
+    {
+        if (m_items[i].id == id)
+        {
+            m_selection = i;
+            break;
+        }
+    }
+}
+

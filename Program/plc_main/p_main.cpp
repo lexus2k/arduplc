@@ -26,6 +26,7 @@
 #include "p_shake_left.h"
 #include "p_down.h"
 #include "p_up.h"
+#include "p_warnings.h"
 
 #include "p_states.h"
 
@@ -42,17 +43,18 @@ SState programStates[] =
     TINY_STATE(STATE_POWER_ON,         "pwr",          powerOn,           0),
     TINY_STATE(STATE_INIT,             "init",         init,              10000),
     TINY_STATE(STATE_REMOVE_BRIQUETTE, "breq",         removeBriquette,   2000),
-    TINY_STATE(STATE_DOWN_CENTER,      "center",       downCenter,        7000),
+    TINY_STATE(STATE_DOWN_CENTER,      "downCentr",    downCenter,        7000),
     TINY_STATE(STATE_SHAKE_RIGHT,      "right",        shakeRight,        1000),
     TINY_STATE(STATE_SHAKE_LEFT,       "left",         shakeLeft,         2000),
     TINY_STATE(STATE_REMOVE,           "rem",          remove,            2000),
     TINY_STATE(STATE_DOWN_TEMP,        "temp",         downTemp,          10000),
-    TINY_STATE(STATE_UP_MIDDLE,        "upcnt",        upCenter,          10000),
+    TINY_STATE(STATE_UP_MIDDLE,        "upCentr",      upCenterTemp,      10000),
     TINY_STATE(STATE_DOWN,             "down",         down,              10000),
     TINY_STATE(STATE_UP,               "up",           up,                10000),
     TINY_STATE(STATE_FAULT,            "ft",           fault,             0),
     TINY_STATE(STATE_MAIN_MENU,        "menu",         mainMenu,          0),
-    TINY_STATE(STATE_PLC_DIAG,          "diag",        diag,              0),
+    TINY_STATE(STATE_PLC_DIAG,         "diag",         diag,              0),
+    TINY_STATE(STATE_WARNING_DISCONNECT,"",            warningDisconnect, 0),
 };
 
 uint8_t programStatesCount()

@@ -42,7 +42,6 @@ void initEnter()
     }
     initPlcOutputs();
     g_lcd.clear();
-    g_lcd.noBacklight();
     g_lcd.setCursor(0,0);
     g_lcd.print("HACTPOUKA ...");
     plcSetFaultJump( STATE_FAULT );
@@ -53,26 +52,26 @@ void initEnter()
     tone(8, 200);
     delay(500);
     noTone(8);
-    plcResetTime();
-    if (readPlcInput(SENSOR_REMOVED) == LOW)
+    if (plcInputRead(SENSOR_REMOVED) == LOW)
     {
         writePlcOutput( SOLENOID_REMOVE, HIGH );
     }
-    if (readPlcInput(SENSOR_TOP) == LOW)
+    if (plcInputRead(SENSOR_TOP) == LOW)
     {
         writePlcOutput( SOLENOID_UP, HIGH );
     }
+    plcResetTime();
 }
 
 void initRun()
 {
     uint8_t passed = 0;
-    if (readPlcInput(SENSOR_TOP) == HIGH)
+    if (plcInputRead(SENSOR_TOP) == HIGH)
     {
         writePlcOutput( SOLENOID_UP, LOW );
         passed++;
     }
-    if (readPlcInput(SENSOR_REMOVED) == HIGH)
+    if (plcInputRead(SENSOR_REMOVED) == HIGH)
     {
         writePlcOutput( SOLENOID_REMOVE, LOW );
         passed++;
@@ -87,5 +86,7 @@ void initExit()
 {
     writePlcOutput( SOLENOID_REMOVE, LOW );
     writePlcOutput( SOLENOID_UP, LOW );
+    g_lcd.clear();
+    g_lcd.noBacklight();
 }
 

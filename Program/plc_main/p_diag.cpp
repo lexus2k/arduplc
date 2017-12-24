@@ -42,7 +42,7 @@ static void plc_print_status()
     char str[16] = "- - - - - - -";
     for(uint8_t i=0; i<plcInputsCount();i++)
     {
-         int input = readPlcInput(i);
+         int input = plcInputRead(i);
          str[i*2] = (input == HIGH) ? '*' : '-';
     }
     g_lcd.setCursor(2, 1);
@@ -91,19 +91,19 @@ void diagRun()
     if (manualModeDiag)
     {
         uint8_t state;
-        state = (g_buttons.isButtonDown( PLC_BUTTON_UP) && (readPlcInput(SENSOR_TOP) == LOW)) ? HIGH: LOW;
+        state = (g_buttons.isButtonDown( PLC_BUTTON_UP) && (plcInputRead(SENSOR_TOP) == LOW)) ? HIGH: LOW;
         if (s_up != state) writePlcOutput( SOLENOID_UP, state);
         s_up = state;
 
-        state = (g_buttons.isButtonDown( PLC_BUTTON_DOWN) && (readPlcInput(SENSOR_BOTTOM) == LOW)) ? HIGH: LOW;
+        state = (g_buttons.isButtonDown( PLC_BUTTON_DOWN) && (plcInputRead(SENSOR_BOTTOM) == LOW)) ? HIGH: LOW;
         if (s_down != state) writePlcOutput( SOLENOID_DOWN, state);
         s_down = state;
 
-        state = (g_buttons.isButtonDown( PLC_BUTTON_RIGHT) && (readPlcInput(SENSOR_REMOVED) == LOW)) ? HIGH: LOW;
+        state = (g_buttons.isButtonDown( PLC_BUTTON_RIGHT) && (plcInputRead(SENSOR_REMOVED) == LOW)) ? HIGH: LOW;
         if (s_remove != state) writePlcOutput( SOLENOID_REMOVE, state);
         s_remove = state;
 
-        state = (g_buttons.isButtonDown( PLC_BUTTON_LEFT) && (readPlcInput(SENSOR_PULLED) == LOW)) ? HIGH: LOW;
+        state = (g_buttons.isButtonDown( PLC_BUTTON_LEFT) && (plcInputRead(SENSOR_PULLED) == LOW)) ? HIGH: LOW;
         if (s_pull_out != state) writePlcOutput( SOLENOID_PULL_OUT, state);
         s_pull_out = state;
     }
@@ -119,6 +119,6 @@ void diagRun()
 
 void diagExit()
 {
-    initPlcInputs();
+    initPlcOutputs();
 }
 

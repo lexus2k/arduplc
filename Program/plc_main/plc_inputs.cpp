@@ -32,22 +32,56 @@ static const uint8_t s_inputPins[] =
     16,
 };
 
+static const uint8_t s_inputCount = sizeof(s_inputPins)/sizeof(s_inputPins[0]);
+
+uint8_t s_timestamp[s_inputCount] = { 0 };
+uint8_t s_lpf[s_inputCount] = { 0 };
+uint8_t s_lastValue[s_inputCount] = { 0 };
+
 int plcInputsCount()
 {
-    return sizeof(s_inputPins)/sizeof(s_inputPins[0]);
+    return s_inputCount;
 }
 
-int readPlcInput(uint8_t input)
+int plcInputRead(uint8_t input)
 {
     /* Invert values, because input sensors use LOW as active. see Schematics */
-    if (LOW == digitalRead(s_inputPins[input])) return HIGH;
-    return LOW;
+    int value = LOW == digitalRead(s_inputPins[input]) ? HIGH: LOW;
+    if ( s_lastValue[input] != value )
+    {
+        if (s_lpf[input])
+        {
+            uint8_t ts = millis();
+            if (ts - s_timestamp[input] >= s_lpf[input])
+            {
+                s_lastValue[input] = value;
+            }
+            value = s_lastValue[input];
+        }
+        else
+        {
+            s_lastValue[input] = value;
+        }
+    }
+    else
+    {
+        s_timestamp[input] = millis();
+    }
+    return value;
 }
 
-void initPlcInputs()
+void plcInputsInit()
 {
     for (uint8_t i=0; i<sizeof(s_inputPins); i++)
     {
         pinMode(s_inputPins[i], INPUT_PULLUP);
+        s_timestamp[i] = millis();
+        s_lpf[i] = 0;
+        s_lastValue[i] = LOW;
     }
+}
+
+int plcInputLpf(uint8_t input, uint8_t ms)
+{
+    s_lpf[input] = ms;
 }

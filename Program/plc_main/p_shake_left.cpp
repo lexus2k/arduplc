@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+// VERIFIED
 #include "p_shake_left.h"
 
 #include "p_states.h"
@@ -25,7 +25,6 @@
 
 #include "plc_inputs.h"
 #include "plc_outputs.h"
-#include "plc_lcd.h"
 #include "plc_settings.h"
 
 #include <Arduino.h>
@@ -36,17 +35,26 @@
 
 void shakeLeftEnter()
 {
-    if (readPlcInput( SENSOR_PULLED ) == LOW)
+    if (plcInputRead( SENSOR_PULLED ) == LOW)
     {
         writePlcOutput( SOLENOID_PULL_OUT, HIGH );
+    }
+    else
+    {
+        // According to logic, we should never fall here
+        plcFault(1);
     }
 }
 
 void shakeLeftRun()
 {
-    if (readPlcInput( SENSOR_PULLED ) == HIGH)
+    if (plcInputRead( SENSOR_PULLED ) == HIGH)
     {
-        g_shakes--;
+        /* This check to prevent problems with wrong input value */
+        if (g_shakes > 0)
+        {
+            g_shakes--;
+        }
         if (g_shakes)
         {
             plcChangeState( STATE_SHAKE_RIGHT );
@@ -70,21 +78,30 @@ void shakeLeftExit()
 
 void removeBriquetteEnter()
 {
-    g_lcd.clear();
-    g_lcd.setCursor(0,1);
-    g_lcd.print("6puKeTbI...");
-    plcResetTime();
-    if (readPlcInput( SENSOR_PULLED ) == LOW)
+    if (plcInputRead( SENSOR_PULLED ) == LOW)
     {
         writePlcOutput( SOLENOID_PULL_OUT, HIGH );
+    }
+    else
+    {
+        // According to logic, we should never fall here
+        plcFault(1);
     }
 }
 
 void removeBriquetteRun()
 {
-    if (readPlcInput(SENSOR_PULLED) == HIGH)
+    if (plcInputRead(SENSOR_PULLED) == HIGH)
     {
-        plcChangeState( STATE_DOWN_CENTER );
+        if (plcStateTime()<500)
+        {
+            // Too fast, cannot be!
+            plcFault(2);
+        }
+        else
+        {
+            plcChangeState( STATE_DOWN_CENTER );
+        }
     }
 }
 

@@ -22,10 +22,9 @@
 #include <EEPROM.h>
 
 
-uint16_t shakeDelayMs = 300;
-uint16_t loadDelayMs  = 500;
+uint16_t shakeMoveRightMs = 300;
+uint16_t loadDelayMs  = 0;
 uint8_t  shakeCount   = 3;
-uint16_t middleDelayMs = 200;
 uint16_t pressDelayMs = 2000;
 uint8_t  automaticMode = 0;
 uint8_t  prePressingMode = 0;
@@ -36,8 +35,7 @@ SPlcStats g_stats = { 0 };
 
 void saveSettings()
 {
-    EEPROM.put(0x10, shakeDelayMs);
-    EEPROM.put(0x14, middleDelayMs);
+    EEPROM.put(0x10, shakeMoveRightMs);
     EEPROM.put(0x18, pressDelayMs);
     EEPROM.put(0x20, shakeCount);
     EEPROM.put(0x21, automaticMode);
@@ -48,8 +46,7 @@ void loadSettings()
 {
     uint8_t val8;
     uint16_t val16;
-    EEPROM.get(0x10, val16); if (val16 != 0xFFFF) shakeDelayMs = val16;
-    EEPROM.get(0x14, val16); if (val16 != 0xFFFF) middleDelayMs = val16;
+    EEPROM.get(0x10, val16); if (val16 != 0xFFFF) shakeMoveRightMs = val16;
     EEPROM.get(0x18, val16); if (val16 != 0xFFFF) pressDelayMs = val16;
     EEPROM.get(0x20, val8); if (val8 != 0xFF) shakeCount = val8;
     EEPROM.get(0x21, val8); if (val8 != 0xFF) automaticMode = val8;

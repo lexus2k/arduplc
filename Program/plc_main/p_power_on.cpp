@@ -20,6 +20,7 @@
 #include "p_power_on.h"
 
 #include "p_states.h"
+#include "p_sensors.h"
 
 #include "plc_inputs.h"
 #include "plc_outputs.h"
@@ -28,11 +29,32 @@
 #include "plc_buttons.h"
 #include "plc_sme.h"
 
+
+/**
+ * Use 15 milliseconds for LPF before taking decision about changed input.
+ * On actual machine, there can be noise on sensor lines, which causes fast
+ * controller to make wrong decisions. In original schematics only relays were
+ * used to control machine, and since relay are inert (switching on delay is about
+ * 15ms for DRI424024LTD), the scheme doesn't sense noise 133 Hz and higher 
+ * (1000ms/(15ms/2)). But for uC this is not true, so, implement LPF in software
+ * to reduce false-positive decisions.
+ */
+static const uint8_t PLC_INPUT_LPF_TIMEOUT_MS = 15;
+
 void powerOnEnter()
 {
     pinMode(8, OUTPUT); // sound
-    initPlcInputs();
+
+    plcInputsInit();
     initPlcOutputs();
+    // Enable LPF for 20 milliseconds for false-positive check
+    plcInputLpf(SENSOR_REMOVED,    PLC_INPUT_LPF_TIMEOUT_MS);
+    plcInputLpf(SENSOR_PULLED,     PLC_INPUT_LPF_TIMEOUT_MS);
+    plcInputLpf(SENSOR_TOP,        PLC_INPUT_LPF_TIMEOUT_MS);
+    plcInputLpf(SENSOR_MIDDLE,     PLC_INPUT_LPF_TIMEOUT_MS);
+    plcInputLpf(SENSOR_BOTTOM,     PLC_INPUT_LPF_TIMEOUT_MS);
+    plcInputLpf(SENSOR_BOTTOM_TEMP,PLC_INPUT_LPF_TIMEOUT_MS);
+
     loadSettings();
     g_buttons.init();
     g_lcd.init();

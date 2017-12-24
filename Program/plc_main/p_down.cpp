@@ -25,7 +25,6 @@
 
 #include "plc_inputs.h"
 #include "plc_outputs.h"
-#include "plc_lcd.h"
 #include "plc_settings.h"
 
 #include <Arduino.h>
@@ -36,25 +35,26 @@
 
 void downTempEnter()
 {
-    g_lcd.clear();
-    g_lcd.setCursor(0,1);
-    g_lcd.print("Pre-press ...");
-    plcResetTime();
-    if (readPlcInput( SENSOR_BOTTOM_TEMP ) == LOW)
+    if (plcInputRead( SENSOR_BOTTOM_TEMP ) == LOW)
     {
         writePlcOutput( SOLENOID_DOWN, HIGH );
+    }
+    else
+    {
+        // According to logic, we should never fall here
+        plcFault(1);
     }
 }
 
 void downTempRun()
 {
-    if (readPlcInput( SENSOR_BOTTOM_TEMP ) == HIGH)
+    if (plcInputRead( SENSOR_BOTTOM_TEMP ) == HIGH)
     {
         plcChangeState( STATE_UP_MIDDLE );
     }
-    if (readPlcInput( SENSOR_BOTTOM ) == HIGH)
+    if (plcInputRead( SENSOR_BOTTOM ) == HIGH)
     {
-        plcFault();
+        plcFault(2);
     }
 }
 
@@ -71,22 +71,23 @@ void downTempExit()
 
 void downCenterEnter()
 {
-    g_lcd.clear();
-    g_lcd.setCursor(0,0);
-    g_lcd.print("BHU3 uEHTP ...");
-    plcResetTime();
-    if (readPlcInput( SENSOR_MIDDLE ) == LOW)
+    if (plcInputRead( SENSOR_MIDDLE ) == LOW)
     {
         writePlcOutput( SOLENOID_DOWN, HIGH );
+    }
+    else
+    {
+        // According to logic, we should never fall here
+        plcFault(1);
     }
 }
 
 void downCenterRun()
 {
-    if (readPlcInput( SENSOR_MIDDLE ) == HIGH)
+    if (plcInputRead( SENSOR_MIDDLE ) == HIGH)
     {
         plcChangeState( STATE_SHAKE_RIGHT );
-        g_shakes = shakeCount + 1;
+        g_shakes = shakeCount;
         if (prePressingMode)
         {
             g_finalPress = false;
@@ -96,7 +97,7 @@ void downCenterRun()
             g_finalPress = true;
         }
     }
-    if (readPlcInput( SENSOR_BOTTOM ) == HIGH)
+    if (plcInputRead( SENSOR_BOTTOM ) == HIGH)
     {
         plcFault();
     }
@@ -105,8 +106,6 @@ void downCenterRun()
 void downCenterExit()
 {
     writePlcOutput( SOLENOID_DOWN, LOW );
-    g_lcd.setCursor(0,0);
-    g_lcd.print("CbIPbE ...");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -115,19 +114,20 @@ void downCenterExit()
 
 void downEnter()
 {
-    g_lcd.clear();
-    g_lcd.setCursor(0,1);
-    g_lcd.print("Press ...");
-    plcResetTime();
-    if (readPlcInput( SENSOR_BOTTOM ) == LOW)
+    if (plcInputRead( SENSOR_BOTTOM ) == LOW)
     {
         writePlcOutput( SOLENOID_DOWN, HIGH );
+    }
+    else
+    {
+        // According to logic, we should never fall here
+        plcFault(1);
     }
 }
 
 void downRun()
 {
-    if (readPlcInput( SENSOR_BOTTOM ) == HIGH)
+    if (plcInputRead( SENSOR_BOTTOM ) == HIGH)
     {
         plcChangeState( STATE_UP );
     }

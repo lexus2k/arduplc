@@ -19,6 +19,29 @@
 
 #pragma once
 
+#include "tiny_menu.h"
+
+enum
+{
+    MENU_START,
+    MENU_STATISTICS,
+    MENU_AUTOMODE,
+    MENU_PRE_PRESS,
+    MENU_LOAD_CYCLES,
+    MENU_PRESS_TIME,
+    MENU_MOVE_RIGHT_TIME,
+    MENU_SHAKER_TIME,
+    MENU_UP_TIME,
+    MENU_TIMINGS,
+    MENU_SAVE_SETTINGS,
+    MENU_DIAG,
+    MENU_RESET,
+    MENU_MANUAL,
+    MENU_NONE,
+};
+
+extern TinyMenu mainMenu;
+
 
 void mainMenuEnter();
 void mainMenuRun();

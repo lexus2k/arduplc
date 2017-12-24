@@ -38,13 +38,20 @@ typedef struct
     uint32_t timeout;
 } SState;
 
+typedef struct
+{
+ 
+    SState *state;
+    uint8_t data;
+} SFaultInfo;
+
 bool plcInitSme(SState *states, uint8_t count, uint8_t initalState);
 
 void plcRunSme();
 
 void plcChangeState( uint8_t newState );
 
-void plcFault();
+void plcFault(uint8_t data=0);
 
 void plcEnableStatesTimeout();
 
@@ -54,7 +61,7 @@ uint8_t plcGetState();
 
 void plcSetFaultJump(uint8_t id);
 
-SState * plcGetFaultInfo();
+SFaultInfo plcGetFaultInfo();
 
 uint32_t plcStateTime();
 

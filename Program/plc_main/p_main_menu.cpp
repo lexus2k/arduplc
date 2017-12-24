@@ -28,43 +28,27 @@
 #include "plc_buttons.h"
 #include "plc_sme.h"
 
-#include "tiny_menu.h"
-
-enum
-{
-    MENU_START,
-    MENU_STATISTICS,
-    MENU_AUTOMODE,
-    MENU_PRE_PRESS,
-    MENU_LOAD_CYCLES,
-    MENU_PRESS_TIME,
-    MENU_SHAKE_TIME,
-    MENU_UP_TIME,
-    MENU_TIMINGS,
-    MENU_SAVE_SETTINGS,
-    MENU_DIAG,
-    MENU_RESET,
-    MENU_MANUAL,
-};
 
 static MenuItem menuItems[] =
 {
     { MENU_START,       "CTAPT" },
     { MENU_STATISTICS,  "CTATUCTUKA" },
+    { MENU_NONE,        nullptr },
     { MENU_AUTOMODE,    "ABTOMAT", MENU_ITEM_BOOL, &automaticMode },
     { MENU_PRE_PRESS,   "\x01O\x02\x01PECCOB.", MENU_ITEM_BOOL, &prePressingMode },
     { MENU_LOAD_CYCLES, "\x01POXO\x02""bl", MENU_ITEM_UINT8, &shakeCount },
     { MENU_PRESS_TIME,  "\x02""ABUTb", MENU_ITEM_TIME16, &pressDelayMs },
-    { MENU_SHAKE_TIME,  "B\x01PABO",   MENU_ITEM_TIME16, &shakeDelayMs },
-    { MENU_UP_TIME,     "\01O\02bEM",  MENU_ITEM_TIME16, &middleDelayMs },
+    { MENU_MOVE_RIGHT_TIME,  "B\x01PABO",   MENU_ITEM_TIME16, &shakeMoveRightMs },
+    { MENU_SHAKER_TIME, "3A\xA2Py3KA", MENU_ITEM_TIME16, &loadDelayMs },
     { MENU_SAVE_SETTINGS, "COXPAHUTb" },
     { MENU_RESET,       "3A\xA2Py3UTb" },
+    { MENU_NONE,        nullptr },
     { MENU_MANUAL,      "MANUAL" },
     { MENU_TIMINGS,     "!\x01O\x02""COE\x02.", MENU_ITEM_BOOL,   &enableTimings },
     { MENU_DIAG,        "\x02UA\xA2HOCTUKA"},
 };
 
-static TinyMenu mainMenu(menuItems, sizeof(menuItems) / sizeof(menuItems[0]));
+TinyMenu mainMenu(menuItems, sizeof(menuItems) / sizeof(menuItems[0]));
 
 static void registerArrow()
 {
@@ -132,7 +116,7 @@ void mainMenuRun()
         mainMenu.down();
         mainMenu.show();
     }
-    if (g_buttons.isLongHold(PLC_BUTTON_SELECT, millis(), 3000))
+    if (g_buttons.isLongHold(PLC_BUTTON_SELECT, millis(), 2000))
     {
         switch (mainMenu.selection())
         {
@@ -156,7 +140,14 @@ void mainMenuRun()
                 break;
             case MENU_TIMINGS:
                 enableTimings = enableTimings == 0 ? 1: 0;
-                mainMenu.show();
+                if (0 == enableTimings)
+                {
+                    plcChangeState(STATE_WARNING_DISCONNECT);
+                }
+                else
+                {
+                    mainMenu.show();
+                }
                 break;
             case MENU_RESET:
                 loadSettings();
@@ -183,19 +174,19 @@ void mainMenuRun()
                 mainMenu.show();
                 break;
             case MENU_LOAD_CYCLES:
-                shakeCount++; if (shakeCount>5) shakeCount=2;
+                shakeCount++; if (shakeCount>5) shakeCount=1;
                 mainMenu.show();
                 break;
             case MENU_PRESS_TIME:
                 pressDelayMs+=1000; if (pressDelayMs>10000) pressDelayMs = 1000;
                 mainMenu.show();
                 break;
-            case MENU_SHAKE_TIME:
-                shakeDelayMs+=100; if (shakeDelayMs>900) shakeDelayMs = 100;
+            case MENU_MOVE_RIGHT_TIME:
+                shakeMoveRightMs+=100; if (shakeMoveRightMs>900) shakeMoveRightMs = 100;
                 mainMenu.show();
                 break;
-            case MENU_UP_TIME:
-                middleDelayMs+=50; if (middleDelayMs>400) middleDelayMs = 100;
+            case MENU_SHAKER_TIME:
+                loadDelayMs+=50; if (loadDelayMs>600) loadDelayMs = 0;
                 mainMenu.show();
                 break;
             default:

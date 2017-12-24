@@ -24,6 +24,7 @@
 enum
 {
     MENU_ITEM_NORMAL = 0,
+    MENU_ITEM_INFO,
     MENU_ITEM_SUBMENU,
     MENU_ITEM_BOOL,
     MENU_ITEM_UINT8,
@@ -48,10 +49,11 @@ public:
     void up();
     void down();
     uint8_t selection();
+    void setSelection(uint8_t id);
 
 private:
     /// list of menu items of the menu
-    MenuItem *m_items;
+    MenuItem *  m_items;
     /// count of menu items in the menu
     uint8_t     m_count;
     /// currently selected item. Internally updated.

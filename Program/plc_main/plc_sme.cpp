@@ -27,6 +27,7 @@
 static uint32_t s_timestamp = 0;
 static uint8_t  s_faultJumpId = 0;
 static uint8_t  s_faultedStateId = 0;
+static uint8_t  s_faultedStateData = 0;
 static SState *s_states;
 static SState *s_active = nullptr;
 static uint8_t s_count;
@@ -55,9 +56,10 @@ void plcRunSme()
 }
 
 
-void plcFault()
+void plcFault(uint8_t data)
 {
     s_faultedStateId = s_active->id;
+    s_faultedStateData = data;
     plcChangeState( s_faultJumpId );
 }
 
@@ -96,8 +98,8 @@ void plcChangeState( uint8_t newState )
         if (s_active->init)
         {
             s_active->init();
-            s_timestamp = millis();
         }
+        s_timestamp = millis();
     }
 }
 
@@ -121,14 +123,16 @@ uint8_t plcGetState()
     return s_active->id;
 }
 
-SState * plcGetFaultInfo()
+SFaultInfo plcGetFaultInfo()
 {
     for (uint8_t i=0; i<s_count; i++)
     {
         if (s_states[i].id == s_faultedStateId)
         {
-            return &s_states[i];
+            SFaultInfo info = { &s_states[i], s_faultedStateData };
+            return info;
         }
     }
-    return nullptr;
+    SFaultInfo info = { nullptr, s_faultedStateData };
+    return info;
 }

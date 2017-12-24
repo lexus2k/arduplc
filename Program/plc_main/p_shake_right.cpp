@@ -25,7 +25,6 @@
 
 #include "plc_inputs.h"
 #include "plc_outputs.h"
-#include "plc_lcd.h"
 #include "plc_settings.h"
 
 #include <Arduino.h>
@@ -36,21 +35,27 @@
 
 void shakeRightEnter()
 {
-    if (readPlcInput( SENSOR_REMOVED ) == LOW)
+    if (plcInputRead( SENSOR_REMOVED ) == LOW)
     {
         writePlcOutput( SOLENOID_REMOVE, HIGH );
+    }
+    else
+    {
+        // According to logic, we should never fall here
+        plcFault(1);
     }
 }
 
 void shakeRightRun()
 {
-    if (plcStateTime() >= shakeDelayMs)
+    if (plcStateTime() >= shakeMoveRightMs)
     {
         plcChangeState( STATE_SHAKE_LEFT );
     }
-    if (readPlcInput( SENSOR_REMOVED ) == HIGH)
+    /* Platform should not be here. If SENSOR_REMOVED is ON, something went wrong */
+    if (plcInputRead( SENSOR_REMOVED ) == HIGH)
     {
-        plcFault();
+        plcFault(2);
     }
 }
 
@@ -65,15 +70,20 @@ void shakeRightExit()
 
 void removeEnter()
 {
-    if (readPlcInput( SENSOR_REMOVED ) == LOW)
+    if (plcInputRead( SENSOR_REMOVED ) == LOW)
     {
         writePlcOutput( SOLENOID_REMOVE, HIGH );
+    }
+    else
+    {
+        // According to logic, we should never fall here
+        plcFault(1);
     }
 }
 
 void removeRun()
 {
-    if (readPlcInput( SENSOR_REMOVED ) == HIGH)
+    if (plcInputRead( SENSOR_REMOVED ) == HIGH)
     {
         if (g_finalPress)
         {

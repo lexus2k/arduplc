@@ -21,6 +21,11 @@
 
 #include <stdint.h>
 
-int plcInputsCount();
-int readPlcInput(uint8_t input);
-void initPlcInputs();
+void plcInputsInit();
+int  plcInputsCount();
+
+int  plcInputRead(uint8_t input);
+/**
+ * Enable low pass filter for ms milliseconds. Zero means disable low pass filter.
+ */
+int  plcInputLpf(uint8_t input, uint8_t ms);

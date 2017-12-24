@@ -38,14 +38,17 @@ void faultEnter()
     g_lcd.backlight();
     delay(10);
     g_lcd.setCursor(0,0);
-    g_lcd.print("!!! ERROR !!!");
+    g_lcd.print("## ERROR ##");
 
-    SState * state = plcGetFaultInfo();
-    if (state != nullptr)
+    SFaultInfo info = plcGetFaultInfo();
+    g_lcd.setCursor(0,1);
+    if (info.state != nullptr)
     {
-        g_lcd.setCursor(0,1);
-        g_lcd.print(state->name);
+        g_lcd.print(info.state->name);
+        g_lcd.print(":");
     }
+    g_lcd.print(info.data);
+
     tone(8, 400, 500);
     delay(1000);
     tone(8, 400, 500);
@@ -53,7 +56,6 @@ void faultEnter()
     tone(8, 400);
     delay(500);
     noTone(8);
-    plcResetTime();
 }
 
 void faultRun()
