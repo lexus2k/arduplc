@@ -26,12 +26,12 @@ void downCenterRun();
 void downCenterExit();
 
 /* Move to bottom sensor */
-void downEnter();
-void downRun();
-void downExit();
+void downFinalEnter();
+void downFinalRun();
+void downFinalExit();
 
 /* Move to temp sensor (pre-pressing) */
-void downTempEnter();
-void downTempRun();
-void downTempExit();
+void downFirstEnter();
+void downFirstRun();
+void downFirstExit();
 

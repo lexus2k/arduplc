@@ -33,7 +33,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 
-void downTempEnter()
+void downFirstEnter()
 {
     if (plcInputRead( SENSOR_BOTTOM_TEMP ) == LOW)
     {
@@ -46,7 +46,7 @@ void downTempEnter()
     }
 }
 
-void downTempRun()
+void downFirstRun()
 {
     if (plcInputRead( SENSOR_BOTTOM_TEMP ) == HIGH)
     {
@@ -58,7 +58,7 @@ void downTempRun()
     }
 }
 
-void downTempExit()
+void downFirstExit()
 {
     writePlcOutput( SOLENOID_DOWN, LOW );
 }
@@ -112,7 +112,7 @@ void downCenterExit()
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 
-void downEnter()
+void downFinalEnter()
 {
     if (plcInputRead( SENSOR_BOTTOM ) == LOW)
     {
@@ -125,7 +125,7 @@ void downEnter()
     }
 }
 
-void downRun()
+void downFinalRun()
 {
     if (plcInputRead( SENSOR_BOTTOM ) == HIGH)
     {
@@ -133,7 +133,7 @@ void downRun()
     }
 }
 
-void downExit()
+void downFinalExit()
 {
     writePlcOutput( SOLENOID_DOWN, LOW );
     delay(pressDelayMs);

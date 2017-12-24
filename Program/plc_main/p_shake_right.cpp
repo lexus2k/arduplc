@@ -87,11 +87,11 @@ void removeRun()
     {
         if (g_finalPress)
         {
-            plcChangeState( STATE_DOWN );
+            plcChangeState( STATE_DOWN_FINAL );
         }
         else
         {
-            plcChangeState( STATE_DOWN_TEMP );
+            plcChangeState( STATE_DOWN_FIRST );
         }
     }
 }
