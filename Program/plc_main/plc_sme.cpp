@@ -47,6 +47,7 @@ void plcRunSme()
     if ((s_active->timeout) && (millis() - s_timestamp > s_active->timeout) && (s_useTimeouts))
     {
         s_faultedStateId = s_active->id;
+        s_faultedStateData = 0;
         plcChangeState( s_faultJumpId );
     }
     else

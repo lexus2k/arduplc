@@ -20,6 +20,7 @@
 #include "p_down.h"
 
 #include "p_states.h"
+#include "p_errors.h"
 #include "p_sensors.h"
 #include "p_solenoids.h"
 
@@ -42,7 +43,7 @@ void downFirstEnter()
     else
     {
         // According to logic, we should never fall here
-        plcFault(1);
+        plcFault( ERROR_CODE_BOTTOM2_SENSOR );
     }
 }
 
@@ -54,7 +55,7 @@ void downFirstRun()
     }
     if (plcInputRead( SENSOR_BOTTOM ) == HIGH)
     {
-        plcFault(2);
+        plcFault( ERROR_CODE_BOTTOM2_SENSOR );
     }
 }
 
@@ -78,7 +79,7 @@ void downCenterEnter()
     else
     {
         // According to logic, we should never fall here
-        plcFault(1);
+        plcFault( ERROR_CODE_CENTER_SENSOR );
     }
 }
 
@@ -99,7 +100,7 @@ void downCenterRun()
     }
     if (plcInputRead( SENSOR_BOTTOM ) == HIGH)
     {
-        plcFault();
+        plcFault( ERROR_CODE_CENTER_SENSOR );
     }
 }
 
@@ -121,7 +122,7 @@ void downFinalEnter()
     else
     {
         // According to logic, we should never fall here
-        plcFault(1);
+        plcFault( ERROR_CODE_BOTTOM_SENSOR );
     }
 }
 

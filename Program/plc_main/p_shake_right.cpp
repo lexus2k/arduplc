@@ -21,6 +21,7 @@
 
 #include "p_states.h"
 #include "p_sensors.h"
+#include "p_errors.h"
 #include "p_solenoids.h"
 
 #include "plc_inputs.h"
@@ -42,7 +43,7 @@ void shakeRightEnter()
     else
     {
         // According to logic, we should never fall here
-        plcFault(1);
+        plcFault( ERROR_CODE_FAR_SENSOR );
     }
 }
 
@@ -55,7 +56,7 @@ void shakeRightRun()
     /* Platform should not be here. If SENSOR_REMOVED is ON, something went wrong */
     if (plcInputRead( SENSOR_REMOVED ) == HIGH)
     {
-        plcFault(2);
+        plcFault( ERROR_CODE_FAR_SENSOR );
     }
 }
 
@@ -77,7 +78,7 @@ void removeEnter()
     else
     {
         // According to logic, we should never fall here
-        plcFault(1);
+        plcFault( ERROR_CODE_FAR_SENSOR );
     }
 }
 

@@ -20,6 +20,7 @@
 #include "p_shake_left.h"
 
 #include "p_states.h"
+#include "p_errors.h"
 #include "p_sensors.h"
 #include "p_solenoids.h"
 
@@ -42,7 +43,7 @@ void shakeLeftEnter()
     else
     {
         // According to logic, we should never fall here
-        plcFault(1);
+        plcFault( ERROR_CODE_NEAR_SENSOR );
     }
 }
 
@@ -85,7 +86,7 @@ void removeBriquetteEnter()
     else
     {
         // According to logic, we should never fall here
-        plcFault(1);
+        plcFault( ERROR_CODE_NEAR_SENSOR );
     }
 }
 
@@ -93,10 +94,10 @@ void removeBriquetteRun()
 {
     if (plcInputRead(SENSOR_PULLED) == HIGH)
     {
-        if (plcStateTime()<500)
+        if (plcStateTime() < 500)
         {
             // Too fast, cannot be!
-            plcFault(2);
+            plcFault( ERROR_CODE_NEAR_SENSOR );
         }
         else
         {
