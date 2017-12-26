@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-// VERIFIED
+
 #include "p_shake_left.h"
 
 #include "p_states.h"
@@ -94,15 +94,7 @@ void removeBriquetteRun()
 {
     if (plcInputRead(SENSOR_PULLED) == HIGH)
     {
-        if (plcStateTime() < 500)
-        {
-            // Too fast, cannot be!
-            plcFault( ERROR_CODE_NEAR_SENSOR );
-        }
-        else
-        {
-            plcChangeState( STATE_DOWN_CENTER );
-        }
+        plcChangeState( STATE_DOWN_CENTER );
     }
 }
 

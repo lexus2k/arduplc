@@ -25,29 +25,40 @@ enum
      * Top sensor error. Error means false-positive sensor reaction
      */
     ERROR_CODE_TOP_SENSOR     = 1,
+    ERROR_CODE_TOP_SENSOR_F   = 2,
 
     /**
      * Center sensor error. Check press position
      * case1. In the middle between bottom and top sensors: Error means false-positive sensor reaction
      * case2. Top or bottom position: Error means absence of sensor reaction
      */
-    ERROR_CODE_CENTER_SENSOR  = 2,
+    ERROR_CODE_CENTER_SENSOR    = 10,
+    ERROR_CODE_CENTER_SENSOR_F  = 11,
 
     /**
      * Bottom sensor error. Error means false-positive sensor reaction
      */
-    ERROR_CODE_BOTTOM_SENSOR  = 3,
+    ERROR_CODE_BOTTOM_SENSOR    = 20,
+    ERROR_CODE_BOTTOM_SENSOR_F  = 21,
 
     /**
      * Far sensor error. Error means false-positive sensor reaction
      */
-    ERROR_CODE_FAR_SENSOR     = 4,
+    ERROR_CODE_FAR_SENSOR     = 30,
+    ERROR_CODE_FAR_SENSOR_F   = 31,
 
     /**
      * Near sensor error. Error means false-positive sensor reaction
      */
-    ERROR_CODE_NEAR_SENSOR    = 5,
+    ERROR_CODE_NEAR_SENSOR    = 40,
+    ERROR_CODE_NEAR_SENSOR_F  = 41,
 
-    ERROR_CODE_BOTTOM2_SENSOR = 6,
+    /**
+     * Bottom prepress sensor error. Check press position
+     * case1. In the middle between bottom and top sensors: Error means false-positive sensor reaction
+     * case2. Top or bottom position: Error means absence of sensor reaction
+     */
+    ERROR_CODE_BOTTOM_PREPRESS_SENSOR = 50,
+    ERROR_CODE_BOTTOM_PREPRESS_SENSOR_F = 51,
 };
 

@@ -47,7 +47,9 @@ int plcInputRead(uint8_t input)
 {
     /* Invert values, because input sensors use LOW as active. see Schematics */
     int value = LOW == digitalRead(s_inputPins[input]) ? HIGH: LOW;
-    if ( s_lastValue[input] != value )
+    return value;
+/*    s_timestamp[input] = millis();
+    while ( s_lastValue[input] != value )
     {
         if (s_lpf[input])
         {
@@ -55,19 +57,17 @@ int plcInputRead(uint8_t input)
             if (ts - s_timestamp[input] >= s_lpf[input])
             {
                 s_lastValue[input] = value;
+                break;
             }
-            value = s_lastValue[input];
+            value = LOW == digitalRead(s_inputPins[input]) ? HIGH: LOW;
         }
         else
         {
             s_lastValue[input] = value;
+            break;
         }
     }
-    else
-    {
-        s_timestamp[input] = millis();
-    }
-    return value;
+    return value;*/
 }
 
 void plcInputsInit()

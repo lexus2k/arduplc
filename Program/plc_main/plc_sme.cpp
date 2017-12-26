@@ -44,41 +44,34 @@ bool plcInitSme(SState *states, uint8_t count, uint8_t initalState)
 
 void plcRunSme()
 {
-    if ((s_active->timeout) && (millis() - s_timestamp > s_active->timeout) && (s_useTimeouts))
+    if (s_useTimeouts && s_active->timeout)
     {
-        s_faultedStateId = s_active->id;
-        s_faultedStateData = 0;
-        plcChangeState( s_faultJumpId );
+        uint32_t timePassedSinceStart = millis() - s_timestamp;
+        if (timePassedSinceStart > s_active->timeout)
+        {
+            s_faultedStateId = s_active->id;
+            s_faultedStateData = 0xFF;
+            plcChangeState( s_faultJumpId );
+            return;
+        }
     }
-    else
+    s_active->state();
+}
+
+static void __plcChangeState( uint8_t newState, bool timeoutCheck )
+{
+    // If state works too fast, this is also wrong
+    if ( s_active != nullptr && timeoutCheck && s_active->minTimeout)
     {
-        s_active->state();
+        uint32_t timePassedSinceStart = millis() - s_timestamp;
+        if (timePassedSinceStart < s_active->minTimeout)
+        {
+            s_faultedStateId = s_active->id;
+            s_faultedStateData = 0x0;
+            newState = s_faultJumpId;
+        }
     }
-}
 
-
-void plcFault(uint8_t data)
-{
-    s_faultedStateId = s_active->id;
-    s_faultedStateData = data;
-    plcChangeState( s_faultJumpId );
-}
-
-
-void plcEnableStatesTimeout()
-{
-    s_useTimeouts = true;
-}
-
-
-void plcDisableStatesTimeout()
-{
-    s_useTimeouts = false;
-}
-
-
-void plcChangeState( uint8_t newState )
-{
     if ( s_active != nullptr )
     {
         if ( s_active->exit )
@@ -103,6 +96,32 @@ void plcChangeState( uint8_t newState )
         s_timestamp = millis();
     }
 }
+
+
+void plcFault(uint8_t data)
+{
+    s_faultedStateId = s_active->id;
+    s_faultedStateData = data;
+    __plcChangeState( s_faultJumpId, false );
+}
+
+
+void plcEnableStatesTimeout()
+{
+    s_useTimeouts = true;
+}
+
+
+void plcDisableStatesTimeout()
+{
+    s_useTimeouts = false;
+}
+
+void plcChangeState( uint8_t newState )
+{
+    __plcChangeState( s_faultJumpId, s_useTimeouts );
+}
+
 
 uint32_t plcStateTime()
 {

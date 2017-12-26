@@ -60,7 +60,6 @@ void initEnter()
     {
         writePlcOutput( SOLENOID_UP, HIGH );
     }
-    plcResetTime();
 }
 
 void initRun()

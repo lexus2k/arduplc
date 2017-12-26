@@ -56,7 +56,7 @@ void shakeRightRun()
     /* Platform should not be here. If SENSOR_REMOVED is ON, something went wrong */
     if (plcInputRead( SENSOR_REMOVED ) == HIGH)
     {
-        plcFault( ERROR_CODE_FAR_SENSOR );
+        plcFault( ERROR_CODE_FAR_SENSOR_F );
     }
 }
 

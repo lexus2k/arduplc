@@ -48,12 +48,12 @@ void powerOnEnter()
     plcInputsInit();
     initPlcOutputs();
     // Enable LPF for 20 milliseconds for false-positive check
-    plcInputLpf(SENSOR_REMOVED,    PLC_INPUT_LPF_TIMEOUT_MS);
-    plcInputLpf(SENSOR_PULLED,     PLC_INPUT_LPF_TIMEOUT_MS);
-    plcInputLpf(SENSOR_TOP,        PLC_INPUT_LPF_TIMEOUT_MS);
-    plcInputLpf(SENSOR_MIDDLE,     PLC_INPUT_LPF_TIMEOUT_MS);
-    plcInputLpf(SENSOR_BOTTOM,     PLC_INPUT_LPF_TIMEOUT_MS);
-    plcInputLpf(SENSOR_BOTTOM_TEMP,PLC_INPUT_LPF_TIMEOUT_MS);
+    plcInputLpf(SENSOR_REMOVED,           PLC_INPUT_LPF_TIMEOUT_MS);
+    plcInputLpf(SENSOR_PULLED,            PLC_INPUT_LPF_TIMEOUT_MS);
+    plcInputLpf(SENSOR_TOP,               PLC_INPUT_LPF_TIMEOUT_MS);
+    plcInputLpf(SENSOR_MIDDLE,            PLC_INPUT_LPF_TIMEOUT_MS);
+    plcInputLpf(SENSOR_BOTTOM,            PLC_INPUT_LPF_TIMEOUT_MS);
+    plcInputLpf(SENSOR_BOTTOM_PREPRESS,   PLC_INPUT_LPF_TIMEOUT_MS);
 
     loadSettings();
     g_buttons.init();

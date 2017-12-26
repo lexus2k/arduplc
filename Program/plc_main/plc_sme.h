@@ -25,8 +25,8 @@
 
 #include <Arduino.h>
 
-#define TINY_STATE(id,name,func,timeout)  \
-     {id, name, func ## Enter, func ## Run, func ## Exit, timeout}
+#define TINY_STATE(id,name,func,minTimeout,maxTimeout)  \
+     {id, name, func ## Enter, func ## Run, func ## Exit, minTimeout, maxTimeout}
 
 typedef struct 
 {
@@ -35,6 +35,7 @@ typedef struct
     void    (*init)();
     void    (*state)();
     void    (*exit)();
+    uint32_t minTimeout;
     uint32_t timeout;
 } SState;
 

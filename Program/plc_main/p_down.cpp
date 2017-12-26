@@ -36,26 +36,27 @@
 
 void downFirstEnter()
 {
-    if (plcInputRead( SENSOR_BOTTOM_TEMP ) == LOW)
+    if (plcInputRead( SENSOR_BOTTOM_PREPRESS ) == LOW)
     {
         writePlcOutput( SOLENOID_DOWN, HIGH );
     }
     else
     {
         // According to logic, we should never fall here
-        plcFault( ERROR_CODE_BOTTOM2_SENSOR );
+        plcFault( ERROR_CODE_BOTTOM_PREPRESS_SENSOR );
     }
 }
 
 void downFirstRun()
 {
-    if (plcInputRead( SENSOR_BOTTOM_TEMP ) == HIGH)
+    if (plcInputRead( SENSOR_BOTTOM_PREPRESS ) == HIGH)
     {
         plcChangeState( STATE_UP_MIDDLE );
     }
     if (plcInputRead( SENSOR_BOTTOM ) == HIGH)
     {
-        plcFault( ERROR_CODE_BOTTOM2_SENSOR );
+        // Either false reaction or prepress sensor doesn't work
+        plcFault( ERROR_CODE_BOTTOM_SENSOR_F );
     }
 }
 
@@ -98,9 +99,13 @@ void downCenterRun()
             g_finalPress = true;
         }
     }
+    if (prePressingMode && (plcInputRead( SENSOR_BOTTOM_PREPRESS ) == HIGH))
+    {
+        plcFault( ERROR_CODE_BOTTOM_PREPRESS_SENSOR_F );
+    }
     if (plcInputRead( SENSOR_BOTTOM ) == HIGH)
     {
-        plcFault( ERROR_CODE_CENTER_SENSOR );
+        plcFault( ERROR_CODE_BOTTOM_SENSOR_F );
     }
 }
 

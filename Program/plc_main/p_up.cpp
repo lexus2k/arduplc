@@ -104,7 +104,7 @@ void upCenterTempRun()
     }
     if (plcInputRead( SENSOR_TOP ) == HIGH)
     {
-        plcFault( ERROR_CODE_CENTER_SENSOR );
+        plcFault( ERROR_CODE_TOP_SENSOR_F );
     }
 }
 
