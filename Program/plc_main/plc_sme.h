@@ -31,12 +31,12 @@
 typedef struct 
 {
     uint8_t id;
-    char    *name;
+    const char *name;
     void    (*init)();
     void    (*state)();
     void    (*exit)();
     uint32_t minTimeout;
-    uint32_t timeout;
+    uint32_t maxTimeout;
 } SState;
 
 typedef struct

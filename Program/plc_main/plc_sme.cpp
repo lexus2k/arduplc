@@ -30,24 +30,20 @@ static uint8_t  s_faultedStateId = 0;
 static uint8_t  s_faultedStateData = 0;
 static SState *s_states;
 static SState *s_active = nullptr;
-static uint8_t s_count;
+static uint8_t s_count = 0;
 static bool    s_useTimeouts = true;
 
-bool plcInitSme(SState *states, uint8_t count, uint8_t initalState)
-{
-    if (!count) return false;
-    s_states = states;
-    s_count = count;
-    plcChangeState( initalState );
-    return true;
-}
 
 void plcRunSme()
 {
-    if (s_useTimeouts && s_active->timeout)
+    if (s_active == nullptr)
+    {
+        return;
+    }
+    if ((s_useTimeouts) && (s_active->maxTimeout > 0))
     {
         uint32_t timePassedSinceStart = millis() - s_timestamp;
-        if (timePassedSinceStart > s_active->timeout)
+        if (timePassedSinceStart > s_active->maxTimeout)
         {
             s_faultedStateId = s_active->id;
             s_faultedStateData = 0xFF;
@@ -61,7 +57,7 @@ void plcRunSme()
 static void __plcChangeState( uint8_t newState, bool timeoutCheck )
 {
     // If state works too fast, this is also wrong
-    if ( s_active != nullptr && timeoutCheck && s_active->minTimeout)
+    if ( (s_active != nullptr) && (timeoutCheck) && (s_active->minTimeout > 0))
     {
         uint32_t timePassedSinceStart = millis() - s_timestamp;
         if (timePassedSinceStart < s_active->minTimeout)
@@ -97,6 +93,15 @@ static void __plcChangeState( uint8_t newState, bool timeoutCheck )
     }
 }
 
+bool plcInitSme(SState *states, uint8_t count, uint8_t initalState)
+{
+    if (!count) return false;
+    s_states = states;
+    s_count = count;
+    s_active = nullptr;
+    __plcChangeState( initalState, false );
+    return true;
+}
 
 void plcFault(uint8_t data)
 {
@@ -119,7 +124,7 @@ void plcDisableStatesTimeout()
 
 void plcChangeState( uint8_t newState )
 {
-    __plcChangeState( s_faultJumpId, s_useTimeouts );
+    __plcChangeState( newState, s_useTimeouts );
 }
 
 
