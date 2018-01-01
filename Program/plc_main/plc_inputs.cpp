@@ -23,8 +23,12 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-static const uint8_t s_inputPins[] =
-{
+#if LOW != 0
+    #error "LOW is defined as non-zore, there could be issues"
+#endif
+
+/*
+    Input pins: 
     10,
     11,
     12,
@@ -32,9 +36,9 @@ static const uint8_t s_inputPins[] =
     14,
     15,
     16,
-};
+*/
 
-static const uint8_t s_inputCount = sizeof(s_inputPins)/sizeof(s_inputPins[0]);
+static const uint8_t s_inputCount = 7;
 
 static uint8_t    s_lpf[s_inputCount] = { 0 };
 static uint8_t    s_lastValue[s_inputCount] = { 0 };
@@ -46,6 +50,15 @@ int plcInputsCount()
 {
     return s_inputCount;
 }
+
+int  plcInputsRefresh()
+{
+    for (uint8_t i=0; i<s_inputCount; i++)
+    {
+        plcInputRead( i );
+    }
+}
+
 
 int plcInputRead(uint8_t input)
 {
@@ -69,57 +82,35 @@ int plcInputRead(uint8_t input)
     SREG = oldSREG;
     s_lastValue[input] = value;
     return value;
-/*    s_timestamp[input] = millis();
-    while ( s_lastValue[input] != value )
-    {
-        if (s_lpf[input])
-        {
-            uint8_t ts = millis();
-            if (ts - s_timestamp[input] >= s_lpf[input])
-            {
-                s_lastValue[input] = value;
-                break;
-            }
-            value = LOW == digitalRead(s_inputPins[input]) ? HIGH: LOW;
-        }
-        else
-        {
-            s_lastValue[input] = value;
-            break;
-        }
-    }
-    return value;*/
 }
 
 ISR(PCINT0_vect)
 {
     uint8_t  pinb = s_pinb^PINB;
     uint16_t ts = millis();
-    if (pinb & 0x04) s_pcint0Ts[0] = ts;
-    if (pinb & 0x08) s_pcint0Ts[1] = ts;
-    if (pinb & 0x10) s_pcint0Ts[2] = ts;
-    if (pinb & 0x20) s_pcint0Ts[3] = ts;
+    if (pinb & (1<<PINB2)) s_pcint0Ts[0] = ts;
+    if (pinb & (1<<PINB3)) s_pcint0Ts[1] = ts;
+    if (pinb & (1<<PINB4)) s_pcint0Ts[2] = ts;
+    if (pinb & (1<<PINB5)) s_pcint0Ts[3] = ts;
     s_pinb ^= pinb;
 }
 
 ISR(PCINT1_vect)
 {
-    uint8_t  pinc = s_pinc^PINB;
+    uint8_t  pinc = s_pinc^PINC;
     uint16_t ts = millis();
-    if (pinc & 0x01) s_pcint0Ts[4] = ts;
-    if (pinc & 0x02) s_pcint0Ts[5] = ts;
-    if (pinc & 0x04) s_pcint0Ts[6] = ts;
+    if (pinc & (1<<PINC0)) s_pcint0Ts[4] = ts;
+    if (pinc & (1<<PINC1)) s_pcint0Ts[5] = ts;
+    if (pinc & (1<<PINC2)) s_pcint0Ts[6] = ts;
     s_pinc ^= pinc;
 }
 
 void plcInputsInit()
 {
-    for (uint8_t i=0; i<sizeof(s_inputPins); i++)
-    {
-        pinMode(s_inputPins[i], INPUT_PULLUP);
-        s_lpf[i] = 0;
-        s_lastValue[i] = LOW;
-    }
+    DDRB &= ~( (1<<PINB2) | (1<<PINB3) | (1<<PINB4) | (1<<PINB5) );
+    PORTB |= ( (1<<PINB2) | (1<<PINB3) | (1<<PINB4) | (1<<PINB5) );
+    DDRC &= ~( (1<<PINC0) | (1<<PINC1) | (1<<PINC2) );
+    PORTC |= ( (1<<PINC0) | (1<<PINC1) | (1<<PINC2) );
     PCMSK0 |= (1<<PCINT2);   // 10
     PCMSK0 |= (1<<PCINT3);   // 11
     PCMSK0 |= (1<<PCINT4);   // 12

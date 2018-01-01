@@ -193,6 +193,7 @@ void mainMenuRun()
                 break;
         }
     }
+    plcInputsRefresh();
 }
 
 void mainMenuExit()

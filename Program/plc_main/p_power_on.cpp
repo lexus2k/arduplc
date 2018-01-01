@@ -39,7 +39,7 @@
  * (1000ms/(15ms/2)). But for uC this is not true, so, implement LPF in software
  * to reduce false-positive decisions.
  */
-static const uint8_t PLC_INPUT_LPF_TIMEOUT_MS = 15;
+static const uint8_t PLC_INPUT_LPF_TIMEOUT_MS = 8;
 
 void powerOnEnter()
 {

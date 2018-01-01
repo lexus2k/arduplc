@@ -23,6 +23,7 @@
 
 void plcInputsInit();
 int  plcInputsCount();
+int  plcInputsRefresh();
 
 int  plcInputRead(uint8_t input);
 /**
