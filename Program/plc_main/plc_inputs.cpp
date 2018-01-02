@@ -42,7 +42,7 @@ static const uint8_t s_inputCount = 7;
 
 static uint8_t    s_lpf[s_inputCount] = { 0 };
 static uint8_t    s_lastValue[s_inputCount] = { 0 };
-static volatile uint16_t s_pcint0Ts[s_inputCount] = {0};
+static volatile uint16_t s_changeTs[s_inputCount] = {0};
 static volatile uint8_t  s_pinb;
 static volatile uint8_t  s_pinc;
 
@@ -67,7 +67,7 @@ int plcInputRead(uint8_t input)
     uint16_t ts = millis();
     oldSREG = SREG;
     cli();
-    if (ts - s_pcint0Ts[input] >= s_lpf[input])
+    if (ts - s_changeTs[input] >= s_lpf[input])
     {
         /* Invert values, because input sensors use LOW as active. see Schematics */
         if (input<4)
@@ -84,14 +84,20 @@ int plcInputRead(uint8_t input)
     return value;
 }
 
+#define UPDATE_INPUT(reg,bit,inputIdx)         \
+     if (reg & (1<<bit)) \
+     { \
+         s_changeTs[inputIdx] = ts; \
+     }
+
 ISR(PCINT0_vect)
 {
     uint8_t  pinb = s_pinb^PINB;
     uint16_t ts = millis();
-    if (pinb & (1<<PINB2)) s_pcint0Ts[0] = ts;
-    if (pinb & (1<<PINB3)) s_pcint0Ts[1] = ts;
-    if (pinb & (1<<PINB4)) s_pcint0Ts[2] = ts;
-    if (pinb & (1<<PINB5)) s_pcint0Ts[3] = ts;
+    UPDATE_INPUT(pinb, PINB2, 0);
+    UPDATE_INPUT(pinb, PINB3, 1);
+    UPDATE_INPUT(pinb, PINB4, 2);
+    UPDATE_INPUT(pinb, PINB5, 3);
     s_pinb ^= pinb;
 }
 
@@ -99,9 +105,9 @@ ISR(PCINT1_vect)
 {
     uint8_t  pinc = s_pinc^PINC;
     uint16_t ts = millis();
-    if (pinc & (1<<PINC0)) s_pcint0Ts[4] = ts;
-    if (pinc & (1<<PINC1)) s_pcint0Ts[5] = ts;
-    if (pinc & (1<<PINC2)) s_pcint0Ts[6] = ts;
+    UPDATE_INPUT(pinc, PINC0, 4);
+    UPDATE_INPUT(pinc, PINC1, 5);
+    UPDATE_INPUT(pinc, PINC2, 6);
     s_pinc ^= pinc;
 }
 

@@ -41,6 +41,10 @@
  */
 static const uint8_t PLC_INPUT_LPF_TIMEOUT_MS = 8;
 
+static bool s_bottomOk = false;
+static bool s_centerOk = false;
+static bool s_topOk = false;
+
 void powerOnEnter()
 {
     pinMode(8, OUTPUT); // sound
@@ -61,12 +65,47 @@ void powerOnEnter()
     g_lcd.backlight();
     g_lcd.clear();
     g_lcd.setCursor(0, 0);
-    g_lcd.print("Powering on...");
+    g_lcd.print("# TECT #");
+    g_lcd.setCursor(0, 1);
+    g_lcd.print("B:--,CP:--,H:--");
+    s_bottomOk = false;
+    s_centerOk = false;
+    s_topOk = false;
+}
+
+
+static void updateDisplay()
+{
+    g_lcd.setCursor(0, 1);
+    g_lcd.print("B:");
+    g_lcd.print(s_topOk ? "OK": "--" );
+    g_lcd.print(",CP:");
+    g_lcd.print(s_centerOk ? "OK": "--" );
+    g_lcd.print(",H:");
+    g_lcd.print(s_bottomOk ? "OK": "--" );
 }
 
 void powerOnRun()
 {
-    plcChangeState(STATE_MAIN_MENU);
+    if (plcInputRead(SENSOR_BOTTOM) == HIGH)
+    {
+        s_bottomOk = true;
+        updateDisplay();
+    }
+    if (plcInputRead(SENSOR_MIDDLE) == HIGH)
+    {
+        s_centerOk = true;
+        updateDisplay();
+    }
+    if (plcInputRead(SENSOR_TOP) == HIGH)
+    {
+        s_topOk = true;
+        updateDisplay();
+    }
+    if (s_topOk && s_bottomOk && s_centerOk)
+    {
+        plcChangeState(STATE_MAIN_MENU);
+    }
 }
 
 void powerOnExit()

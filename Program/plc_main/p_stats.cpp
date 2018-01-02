@@ -17,38 +17,41 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "p_stats.h"
 
+#include "p_states.h"
+#include "p_main_menu.h"
+
+#include "plc_version.h"
+#include "plc_settings.h"
+#include "plc_lcd.h"
+#include "plc_buttons.h"
 #include "plc_sme.h"
 
-#include <stdint.h>
-
-enum
+void statsEnter()
 {
-    STATE_POWER_ON,
-    STATE_MAIN_MENU,
-    STATE_PLC_DIAG,
-    STATE_PLC_BUTTONS,
-    STATE_WARNING_DISCONNECT,
-    STATE_PLC_STATS,
-    STATE_FAULT,
+    g_lcd.backlight();
+    g_lcd.clear();
+    g_lcd.setCursor(0, 0);
+    g_lcd.print("BEP: ");
+    g_lcd.print(PLC_VERSION_MAJOR);
+    g_lcd.print(".");
+    g_lcd.print(PLC_VERSION_MINOR);
+    g_lcd.print(".");
+    g_lcd.print(PLC_VERSION_PATCH);
+    g_lcd.setCursor(0, 1);
+    g_lcd.print("3A\x01yCKU: ");
+    g_lcd.print(g_stats.cycles);
+}
 
-    STATE_PASSIVE,
+void statsRun()
+{
+    if (g_buttons.isShortPress())
+    {
+        plcChangeState(STATE_MAIN_MENU);
+    }
+}
 
-    STATE_INIT,
-    STATE_REMOVE_BRIQUETTE,
-    STATE_DOWN_CENTER,
-    STATE_SHAKE_RIGHT,
-    STATE_SHAKE_LEFT,
-    STATE_REMOVE,
-    STATE_DOWN_FIRST,
-    STATE_UP_MIDDLE,
-    STATE_DOWN_FINAL,
-    STATE_UP,
-};
-
-extern uint8_t g_shakes;
-extern bool g_finalPress;
-
-extern SState programStates[];
-uint8_t programStatesCount();
+void statsExit()
+{
+}

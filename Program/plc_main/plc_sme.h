@@ -50,7 +50,17 @@ bool plcInitSme(SState *states, uint8_t count, uint8_t initalState);
 
 void plcRunSme();
 
+/**
+ * Changes SM state. If current state has minimum defined timeout, and
+ * state change take place, SME will check if minimum timeout is passed.
+ * If not SME will switch to fault state.
+ */
 void plcChangeState( uint8_t newState );
+
+/**
+ * Changes SM state, regardless of timings set for the current state
+ */
+void plcForceChangeState( uint8_t newState );
 
 void plcFault(uint8_t data=0);
 

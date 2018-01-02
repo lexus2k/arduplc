@@ -27,6 +27,7 @@
 #include "p_down.h"
 #include "p_up.h"
 #include "p_warnings.h"
+#include "p_stats.h"
 
 #include "p_states.h"
 
@@ -55,6 +56,7 @@ SState programStates[] =
     TINY_STATE(STATE_MAIN_MENU,        "menu",         mainMenu,          0,             0),
     TINY_STATE(STATE_PLC_DIAG,         "diag",         diag,              0,             0),
     TINY_STATE(STATE_WARNING_DISCONNECT,"",            warningDisconnect, 0,             0),
+    TINY_STATE(STATE_PLC_STATS,         "",            stats,             0,             0),
 };
 
 uint8_t programStatesCount()

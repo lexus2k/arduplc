@@ -28,10 +28,10 @@ static uint32_t s_timestamp = 0;
 static uint8_t  s_faultJumpId = 0;
 static uint8_t  s_faultedStateId = 0;
 static uint8_t  s_faultedStateData = 0;
-static SState *s_states;
-static SState *s_active = nullptr;
-static uint8_t s_count = 0;
-static bool    s_useTimeouts = true;
+static SState * s_states;
+static SState * s_active = nullptr;
+static uint8_t  s_count = 0;
+static bool     s_useTimeouts = true;
 
 
 void plcRunSme()
@@ -127,6 +127,10 @@ void plcChangeState( uint8_t newState )
     __plcChangeState( newState, s_useTimeouts );
 }
 
+void plcForceChangeState( uint8_t newState )
+{
+    __plcChangeState( newState, false );
+}
 
 uint32_t plcStateTime()
 {

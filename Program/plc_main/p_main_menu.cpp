@@ -31,21 +31,21 @@
 
 static MenuItem menuItems[] =
 {
-    { MENU_START,       "CTAPT" },
-    { MENU_STATISTICS,  "CTATUCTUKA" },
-    { MENU_NONE,        nullptr },
-    { MENU_AUTOMODE,    "ABTOMAT", MENU_ITEM_BOOL, &automaticMode },
-    { MENU_PRE_PRESS,   "\x01O\x02\x01PECCOB.", MENU_ITEM_BOOL, &prePressingMode },
-    { MENU_LOAD_CYCLES, "\x01POXO\x02""bl", MENU_ITEM_UINT8, &shakeCount },
-    { MENU_PRESS_TIME,  "\x02""ABUTb", MENU_ITEM_TIME16, &pressDelayMs },
-    { MENU_MOVE_RIGHT_TIME,  "B\x01PABO",   MENU_ITEM_TIME16, &shakeMoveRightMs },
-    { MENU_SHAKER_TIME, "3A\xA2Py3KA", MENU_ITEM_TIME16, &loadDelayMs },
-    { MENU_SAVE_SETTINGS, "COXPAHUTb" },
-    { MENU_RESET,       "3A\xA2Py3UTb" },
-    { MENU_NONE,        nullptr },
-    { MENU_MANUAL,      "MANUAL" },
-    { MENU_TIMINGS,     "!\x01O\x02""COE\x02.", MENU_ITEM_BOOL,   &enableTimings },
-    { MENU_DIAG,        "\x02UA\xA2HOCTUKA"},
+    { MENU_START,            "CTAPT" },
+    { MENU_STATISTICS,       "CTATUCTUKA" },
+    { MENU_NONE,             nullptr },
+    { MENU_AUTOMODE,         "ABTOMAT",              MENU_ITEM_BOOL, &automaticMode },
+    { MENU_PRE_PRESS,        "\x01O\x02\x01PECCOB.", MENU_ITEM_BOOL, &prePressingMode },
+    { MENU_LOAD_CYCLES,      "\x01POXO\x02""bl",     MENU_ITEM_UINT8, &shakeCount },
+    { MENU_PRESS_TIME,       "\x02""ABUTb",          MENU_ITEM_TIME16, &pressDelayMs },
+    { MENU_MOVE_RIGHT_TIME,  "B\x01PABO",            MENU_ITEM_TIME16, &shakeMoveRightMs },
+    { MENU_SHAKER_TIME,      "3A\xA2Py3KA",          MENU_ITEM_TIME16, &loadDelayMs },
+    { MENU_SAVE_SETTINGS,    "COXPAHUTb" },
+    { MENU_RESET,            "3A\xA2Py3UTb" },
+    { MENU_NONE,             nullptr },
+    { MENU_MANUAL,           "MANUAL" },
+    { MENU_TIMINGS,          "!\x01O\x02""COE\x02.", MENU_ITEM_BOOL,   &enableTimings },
+    { MENU_DIAG,             "\x02UA\xA2HOCTUKA"},
 };
 
 TinyMenu mainMenu(menuItems, sizeof(menuItems) / sizeof(menuItems[0]));
@@ -188,6 +188,9 @@ void mainMenuRun()
             case MENU_SHAKER_TIME:
                 loadDelayMs+=50; if (loadDelayMs>600) loadDelayMs = 0;
                 mainMenu.show();
+                break;
+            case MENU_STATISTICS:
+                plcChangeState(STATE_PLC_STATS);
                 break;
             default:
                 break;

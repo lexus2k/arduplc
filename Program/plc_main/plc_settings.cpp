@@ -22,7 +22,7 @@
 #include <EEPROM.h>
 
 
-uint16_t shakeMoveRightMs = 300;
+uint16_t shakeMoveRightMs = 500;
 uint16_t loadDelayMs  = 0;
 uint8_t  shakeCount   = 3;
 uint16_t pressDelayMs = 2000;

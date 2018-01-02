@@ -41,7 +41,7 @@ void loop()
     {
         if (g_buttons.isShortPress())
         {
-            plcChangeState( STATE_MAIN_MENU );
+            plcForceChangeState( STATE_MAIN_MENU );
             plcDisableOutputs();
             tone(8, 200); delay(300);
             tone(8, 500); delay(200);
