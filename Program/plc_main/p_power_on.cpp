@@ -106,6 +106,10 @@ void powerOnRun()
     {
         plcChangeState(STATE_MAIN_MENU);
     }
+    if (g_buttons.isLongHold(PLC_BUTTON_DOWN, millis(), 5000))
+    {
+        plcChangeState(STATE_MAIN_MENU);
+    }
 }
 
 void powerOnExit()

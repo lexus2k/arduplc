@@ -49,7 +49,7 @@ SState programStates[] =
     TINY_STATE(STATE_SHAKE_LEFT,       "left",         shakeLeft,         0,             2000),
     TINY_STATE(STATE_REMOVE,           "rem",          remove,            500,           2000),
     TINY_STATE(STATE_DOWN_FIRST,       "down1",        downFirst,         500,           7000),
-    TINY_STATE(STATE_UP_MIDDLE,        "^Centr",       upCenterTemp,      500,           7000),
+    TINY_STATE(STATE_UP_MIDDLE,        "^Centr",       upCenterTemp,      100,           7000),
     TINY_STATE(STATE_DOWN_FINAL,       "down2",        downFinal,         500,           10000),
     TINY_STATE(STATE_UP,               "up",           up,                1000,          10000),
     TINY_STATE(STATE_FAULT,            "ft",           fault,             0,             0),
