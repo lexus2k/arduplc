@@ -39,8 +39,9 @@ void loop()
     plcRunSme();
     if (plcGetState() > STATE_PASSIVE)
     {
-        if (g_buttons.isShortPress())
+        if (g_buttons.isButtonDown())
         {
+            g_buttons.disableUpAction();
             plcForceChangeState( STATE_MAIN_MENU );
             plcDisableOutputs();
             tone(8, 200); delay(300);

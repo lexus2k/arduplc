@@ -23,4 +23,4 @@
 
 static const uint8_t PLC_VERSION_MAJOR  = 1;
 static const uint8_t PLC_VERSION_MINOR  = 0;
-static const uint8_t PLC_VERSION_PATCH  = 1;
+static const uint8_t PLC_VERSION_PATCH  = 2;
