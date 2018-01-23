@@ -27,6 +27,7 @@
 #include "plc_outputs.h"
 #include "plc_lcd.h"
 #include "plc_settings.h"
+#include "plc_buttons.h"
 
 #include <Arduino.h>
 
@@ -44,6 +45,7 @@ void initEnter()
     g_lcd.clear();
     g_lcd.setCursor(0,0);
     g_lcd.print("HACTPOUKA ...");
+    g_buttons.reset();
     plcSetFaultJump( STATE_FAULT );
     tone(8, 200, 500);
     delay(1000);

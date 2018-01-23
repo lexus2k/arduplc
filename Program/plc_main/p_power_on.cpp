@@ -39,7 +39,9 @@
  * (1000ms/(15ms/2)). But for uC this is not true, so, implement LPF in software
  * to reduce false-positive decisions.
  */
-static const uint8_t PLC_INPUT_LPF_TIMEOUT_MS = 8;
+static const uint8_t PLC_INPUT_LPF_H_TIMEOUT_MS = 14;
+static const uint8_t PLC_INPUT_LPF_V_TIMEOUT_MS = 20;
+static const uint8_t PLC_INPUT_LPF_V_CENTER_TIMEOUT_MS = 100;
 
 static bool s_bottomOk = false;
 static bool s_centerOk = false;
@@ -52,12 +54,12 @@ void powerOnEnter()
     initPlcOutputs();
     plcInputsInit();
     // Enable LPF for 20 milliseconds for false-positive check
-    plcInputLpf(SENSOR_REMOVED,           PLC_INPUT_LPF_TIMEOUT_MS);
-    plcInputLpf(SENSOR_PULLED,            PLC_INPUT_LPF_TIMEOUT_MS);
-    plcInputLpf(SENSOR_TOP,               PLC_INPUT_LPF_TIMEOUT_MS);
-    plcInputLpf(SENSOR_MIDDLE,            PLC_INPUT_LPF_TIMEOUT_MS);
-    plcInputLpf(SENSOR_BOTTOM,            PLC_INPUT_LPF_TIMEOUT_MS);
-    plcInputLpf(SENSOR_BOTTOM_PREPRESS,   PLC_INPUT_LPF_TIMEOUT_MS);
+    plcInputLpf(SENSOR_REMOVED,           PLC_INPUT_LPF_H_TIMEOUT_MS);
+    plcInputLpf(SENSOR_PULLED,            PLC_INPUT_LPF_H_TIMEOUT_MS);
+    plcInputLpf(SENSOR_TOP,               PLC_INPUT_LPF_V_TIMEOUT_MS);
+    plcInputLpf(SENSOR_MIDDLE,            PLC_INPUT_LPF_V_CENTER_TIMEOUT_MS);
+    plcInputLpf(SENSOR_BOTTOM,            PLC_INPUT_LPF_V_TIMEOUT_MS);
+    plcInputLpf(SENSOR_BOTTOM_PREPRESS,   PLC_INPUT_LPF_V_TIMEOUT_MS);
 
     loadSettings();
     g_buttons.init();

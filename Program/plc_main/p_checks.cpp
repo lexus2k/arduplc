@@ -17,11 +17,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "p_shake_right.h"
+#include "p_checks.h"
 
 #include "p_states.h"
-#include "p_sensors.h"
 #include "p_errors.h"
+#include "p_sensors.h"
 #include "p_solenoids.h"
 
 #include "plc_inputs.h"
@@ -34,64 +34,38 @@
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 
-void shakeRightEnter()
+void checkBeforeDownEnter()
 {
-    if (plcInputRead( SENSOR_REMOVED ) == LOW)
+}
+
+void checkBeforeDownRun()
+{
+    if (plcStateTime() > 800)
     {
-        writePlcOutput( SOLENOID_REMOVE, HIGH );
+        if (plcInputRead( SENSOR_REMOVED ) == HIGH)
+        {
+            if (g_finalPress)
+            {
+                plcChangeState( STATE_DOWN_FINAL );
+            }
+            else
+            {
+                plcChangeState( STATE_DOWN_FIRST );
+            }
+        }
     }
-    else
+    if (plcInputRead( SENSOR_REMOVED ) == LOW)
     {
         // According to logic, we should never fall here
         plcFault( ERROR_CODE_FAR_SENSOR );
     }
 }
 
-void shakeRightRun()
+void checkBeforeDownExit()
 {
-    if (plcStateTime() >= shakeMoveRightMs)
-    {
-        plcChangeState( STATE_SHAKE_LEFT );
-    }
-    /* Platform should not be here. If SENSOR_REMOVED is ON, something went wrong */
-    if (plcInputRead( SENSOR_REMOVED ) == HIGH)
-    {
-        plcFault( ERROR_CODE_FAR_SENSOR_F );
-    }
-}
-
-void shakeRightExit()
-{
-    writePlcOutput( SOLENOID_REMOVE, LOW );
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
-
-void removeEnter()
-{
-    if (plcInputRead( SENSOR_REMOVED ) == LOW)
-    {
-        writePlcOutput( SOLENOID_REMOVE, HIGH );
-    }
-    else
-    {
-        // According to logic, we should never fall here
-        plcFault( ERROR_CODE_FAR_SENSOR );
-    }
-}
-
-void removeRun()
-{
-    if ((plcStateTime() > 400) && (plcInputRead( SENSOR_REMOVED ) == HIGH))
-    {
-        plcChangeState( STATE_CHECK_BEFORE_DOWN );
-    }
-}
-
-void removeExit()
-{
-    writePlcOutput( SOLENOID_REMOVE, LOW );
-}
 

@@ -19,6 +19,7 @@
 
 #include "p_power_on.h"
 #include "p_main_menu.h"
+#include "p_checks.h"
 #include "p_init.h"
 #include "p_diag.h"
 #include "p_fault.h"
@@ -44,14 +45,15 @@ SState programStates[] =
     TINY_STATE(STATE_POWER_ON,         "pwr",          powerOn,           0,             0),
     TINY_STATE(STATE_INIT,             "init",         init,              0,             10000),
     TINY_STATE(STATE_REMOVE_BRIQUETTE, "breq",         removeBriquette,   500,           2000),
-    TINY_STATE(STATE_DOWN_CENTER,      "vCentr",       downCenter,        500,           7000),
+    TINY_STATE(STATE_DOWN_CENTER,      "vCntr",        downCenter,        500,           7000),
     TINY_STATE(STATE_SHAKE_RIGHT,      "right",        shakeRight,        0,             1000),
     TINY_STATE(STATE_SHAKE_LEFT,       "left",         shakeLeft,         0,             2000),
     TINY_STATE(STATE_REMOVE,           "rem",          remove,            500,           2000),
-    TINY_STATE(STATE_DOWN_FIRST,       "down1",        downFirst,         500,           7000),
-    TINY_STATE(STATE_UP_MIDDLE,        "^Centr",       upCenterTemp,      100,           7000),
+    TINY_STATE(STATE_DOWN_FIRST,       "down1",        downFirst,         500,           10000),
+    TINY_STATE(STATE_UP_MIDDLE,        "^Cntr",        upCenterTemp,      200,           7000),
     TINY_STATE(STATE_DOWN_FINAL,       "down2",        downFinal,         500,           10000),
     TINY_STATE(STATE_UP,               "up",           up,                1000,          10000),
+    TINY_STATE(STATE_CHECK_BEFORE_DOWN,"vfy",          checkBeforeDown,   0,             0),
     TINY_STATE(STATE_FAULT,            "ft",           fault,             0,             0),
     TINY_STATE(STATE_MAIN_MENU,        "menu",         mainMenu,          0,             0),
     TINY_STATE(STATE_PLC_DIAG,         "diag",         diag,              0,             0),

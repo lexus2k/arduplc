@@ -97,8 +97,9 @@ void upCenterTempRun()
 {
     if (plcInputRead( SENSOR_MIDDLE ) == HIGH)
     {
-        g_shakes = shakeCount;
+        g_shakes = shakeCount + 1;
         g_finalPress = true;
+        delay(340);
         writePlcOutput( SOLENOID_UP, LOW );
         plcChangeState( STATE_SHAKE_LEFT );
     }
